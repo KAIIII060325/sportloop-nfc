@@ -7963,6 +7963,7 @@
         if (existing.status === "等待NFC验证" && isVerificationCodeExpired(existing)) {
           store.loans = store.loans.filter((loan) => loan.id !== existing.id);
           saveStore();
+          runRemote(() => supabaseRequest(`loans?id=eq.${existing.id}`, { method: "PATCH", body: { status: "已取消" } }));
         } else {
           state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
           if (!options.skipNavigate) render();
