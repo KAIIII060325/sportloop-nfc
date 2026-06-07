@@ -4917,9 +4917,8 @@
     const reportIssueTypes = {
       "乒乓球拍": ["胶皮脱落", "拍柄松动", "表面磨损", "底板开裂"],
       "羽毛球拍": ["拍柄松动", "拍框变形", "拍线断裂", "握柄磨损"],
-      "羽毛球": ["羽毛缺损", "球体变形", "球头脱落"],
-      "乒乓球": ["球体破裂", "弹力不足", "表面变形"],
       "篮球": ["气压不足", "表面磨损", "表皮脱落", "球体变形"],
+      "足球": ["气压不足", "表面磨损", "表皮脱落", "缝线开裂"],
     };
 
     function issueOptionsFor(equipmentId) {
@@ -5018,81 +5017,68 @@
       equipment: [
         {
           id: "paddle-red",
-          assetId: "SL-PB-1024",
+          assetId: "PP-ZP",
           name: "乒乓球拍（直拍）",
           category: "乒乓球拍",
-          image: "assets/paddle-red.png", /* [IMAGE-01] 乒乓球拍（直拍）相对路径，与 index.html 同目录 */
-          total: 10,
-          available: 6,
-          status: "可借",
-          health: 96,
-          venue: "东区体育馆",
-          desc: "适合课堂训练 and 日常对打，归还前重点检测胶皮、边缘和拍柄。",
+          image: "assets/paddle-red.png",
+          total: 0,
+          available: 0,
+          status: "补充中",
+          health: 100,
+          venue: "",
+          desc: "",
         },
         {
           id: "paddle-black",
-          assetId: "SL-PB-0921",
+          assetId: "PP-HP",
           name: "乒乓球拍（横拍）",
           category: "乒乓球拍",
-          image: "assets/paddle-black.png", /* [IMAGE-02] 乒乓球拍（横拍） */
-          total: 8,
-          available: 4,
-          status: "可借",
-          health: 92,
-          venue: "西区球类馆",
-          desc: "常用球拍，借还记录会绑定唯一条形码。",
-        },
-        {
-          id: "racket",
-          assetId: "SL-BD-0318",
-          name: "羽毛球拍",
-          category: "羽毛球拍",
-          image: "assets/racket.png", /* [IMAGE-03] 羽毛球拍 */
-          total: 12,
-          available: 8,
-          status: "可借",
-          health: 94,
-          venue: "综合训练馆",
-          desc: "归还前重点检查拍框、拍线和握柄。",
-        },
-        {
-          id: "shuttle",
-          assetId: "SL-SH-0208",
-          name: "羽毛球",
-          category: "羽毛球",
-          image: "assets/shuttle.png", /* [IMAGE-04] 羽毛球 */
-          total: 30,
-          available: 12,
+          image: "assets/paddle-black.png",
+          total: 0,
+          available: 0,
           status: "补充中",
-          health: 88,
-          venue: "综合训练馆",
-          desc: "消耗较快，系统会按库存提醒管理员补充。",
-        },
-        {
-          id: "pingpong",
-          assetId: "SL-PP-0616",
-          name: "乒乓球",
-          category: "乒乓球",
-          image: "assets/pingpong.png", /* [IMAGE-05] 乒乓球 */
-          total: 40,
-          available: 20,
-          status: "可借",
-          health: 91,
-          venue: "东区体育馆",
-          desc: "按盒借用，归还时机器扫码归档。",
+          health: 100,
+          venue: "",
+          desc: "",
         },
         {
           id: "basketball",
-          assetId: "SL-BK-0027",
+          assetId: "BK",
           name: "篮球",
           category: "篮球",
-          image: "assets/basketball.png", /* [IMAGE-06] 篮球 */
-          total: 12,
-          available: 5,
-          status: "可借",
-          health: 90,
-          venue: "室外篮球场",
-          desc: "重点检测气压、表面磨损和裂纹。",
+          image: "assets/basketball.png",
+          total: 0,
+          available: 0,
+          status: "补充中",
+          health: 100,
+          venue: "",
+          desc: "",
+        },
+        {
+          id: "football",
+          assetId: "FB",
+          name: "足球",
+          category: "足球",
+          image: "assets/football.png",
+          total: 0,
+          available: 0,
+          status: "补充中",
+          health: 100,
+          venue: "",
+          desc: "",
+        },
+        {
+          id: "badminton",
+          assetId: "BD",
+          name: "羽毛球拍",
+          category: "羽毛球拍",
+          image: "assets/racket.png",
+          total: 0,
+          available: 0,
+          status: "补充中",
+          health: 100,
+          venue: "",
+          desc: "",
         },
       ],
       loans: [],
@@ -5103,7 +5089,7 @@
       machineSyncLogs: [],
       adminOperationLogs: [],
       messages: [
-        { id: "m1", title: "欢迎使用 SportLoop", text: "借出与归还在场馆机器完成，手机负责查看状态、同步记录，以及归还前扫码/拍照检测。", time: "刚刚" },
+        { id: "m1", title: "欢迎使用 SportLoop", text: "选择器材 → 获取验证码 → 场馆 NFC 机器扫描验证 → 上传借出前照片完成借用。", time: "刚刚" },
       ],
     };
 
@@ -6461,89 +6447,59 @@
     // ⚡ 完美重组的首页核心渲染方法：保留全部原有生态，只精准重构顶部卡片和加上反馈入口
     function homePage() {
       const totalAvailable = store.equipment.reduce((sum, item) => sum + item.available, 0);
-      const openVenues = new Set(store.equipment.filter((item) => item.available > 0).map((item) => cleanVenue(item.venue))).size;
-      const health = store.equipment.length ? Math.round(store.equipment.reduce((sum, item) => sum + item.health, 0) / store.equipment.length) : 0;
       const currentLoan = activeLoan();
-      const popularEquipment = store.equipment.slice(0, 4);
+      const popularEquipment = store.equipment.slice(0, 5);
 
       return `
-        <section class="screen home-screen">
-          <header class="home-top">
-            <button class="icon-button" data-route="messages" aria-label="消息通知">${icon("bell")}</button>
-            <div class="brand"><img class="logo-mark app-icon" src="${escapeAttr(assetUrl(APP_ICON_SRC))}" alt="SportLoop" decoding="async" /><!-- [IMAGE-10] --><span>SportLoop</span></div>
-            <button class="icon-button" data-route="list" aria-label="器材列表">${icon("search")}</button>
+        <section class=”screen home-screen”>
+          <header class=”home-top”>
+            <button class=”icon-button” data-route=”messages” aria-label=”消息通知”>${icon(“bell”)}</button>
+            <div class=”brand”><img class=”logo-mark app-icon” src=”${escapeAttr(assetUrl(APP_ICON_SRC))}” alt=”SportLoop” decoding=”async” /><span>SportLoop</span></div>
+            <button class=”icon-button” data-route=”list” aria-label=”器材列表”>${icon(“search”)}</button>
           </header>
           ${notice()}
-          <main class="scroll">
-            
-            <!-- 📷 完美像素级还原参考图样式的头部卡片组 -->
-            <section class="new-hero-container">
-              <div class="new-hero-left">
-                <h1 class="new-hero-title">今天</h1>
-                <h1 class="new-hero-title">想打什么球？</h1>
-                <p class="new-hero-subtitle">先看状态，再去借用</p>
-
-                <div class="new-stats-stack">
-                  <!-- 1. 今日可借 -->
-                  <div class="new-stat-card">
-                    <div class="new-stat-icon-wrapper red-theme">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 14 10 16 14 12"></polyline></svg>
+          <main class=”scroll”>
+            <section class=”new-hero-container”>
+              <div class=”new-hero-left”>
+                <h1 class=”new-hero-title”>Sports</h1>
+                <h1 class=”new-hero-title”>器材借用</h1>
+                <p class=”new-hero-subtitle”>先看状态，再去借用</p>
+                <div class=”new-stats-stack”>
+                  <div class=”new-stat-card”>
+                    <div class=”new-stat-icon-wrapper red-theme”>
+                      ${icon(“bag”)}
                     </div>
-                    <div class="new-stat-text">
-                      <span class="new-stat-label">今日可借</span>
-                      <span class="new-stat-val">${totalAvailable} <small>件</small></span>
-                    </div>
-                  </div>
-
-                  <!-- 2. 状态良好 -->
-                  <div class="new-stat-card">
-                    <div class="new-stat-icon-wrapper blue-theme">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 11 11 13 15 9"></polyline></svg>
-                    </div>
-                    <div class="new-stat-text">
-                      <span class="new-stat-label">状态良好</span>
-                      <span class="new-stat-val">${health}%</span>
-                    </div>
-                  </div>
-
-                  <!-- 3. 开放场地 -->
-                  <div class="new-stat-card">
-                    <div class="new-stat-icon-wrapper purple-theme">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
-                    </div>
-                    <div class="new-stat-text">
-                      <span class="new-stat-label">开放场地</span>
-                      <span class="new-stat-val">${openVenues} <small>个</small></span>
+                    <div class=”new-stat-text”>
+                      <span class=”new-stat-label”>可借器材</span>
+                      <span class=”new-stat-val”>${totalAvailable} <small>件</small></span>
                     </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <!-- 🔧 首页重磅加入：无缝联动报修系统的“反馈入口” -->
-            <section class="home-feedback-card" data-route="report" style="cursor: pointer; margin-bottom: 16px;">
-              <div class="feedback-card-content">
-                <div class="feedback-card-text">
-                  <h3>💬 反馈器材与场馆问题</h3>
-                  <p>球拍磨损、没气、场地受阻？点击一键快速反馈报损</p>
+            <section class=”home-feedback-card” data-route=”report” style=”cursor: pointer; margin-bottom: 16px;”>
+              <div class=”feedback-card-content”>
+                <div class=”feedback-card-text”>
+                  <h3>💬 反馈器材问题</h3>
+                  <p>球拍磨损、没气？点击快速反馈报损</p>
                 </div>
-                <div class="feedback-arrow">${icon("chevron")}</div>
+                <div class=”feedback-arrow”>${icon(“chevron”)}</div>
               </div>
             </section>
 
-            <div class="section-head"><h2>借用流程</h2></div>
+            <div class=”section-head”><h2>借用流程</h2></div>
             ${flow()}
 
-            <div style="margin-top: 14px;">
+            <div style=”margin-top: 14px;”>
               ${currentLoan ? currentLoanCard(currentLoan) : quickStartCard()}
             </div>
 
-            <div class="section-head">
-              <h2>热门器材</h2>
-              <button class="text-button" data-route="list">查看全部 ${icon("chevron")}</button>
+            <div class=”section-head”>
+              <h2>器材种类</h2>
             </div>
-            <div class="equipment-grid">
-              ${popularEquipment.length ? popularEquipment.map(equipmentCard).join("") : `<div class="empty">暂无器材，管理员录入后会显示在这里。</div>`}
+            <div class=”equipment-grid”>
+              ${popularEquipment.length ? popularEquipment.map(equipmentCard).join(“”) : `<div class=”empty”>暂无器材，管理员录入后会显示在这里。</div>`}
             </div>
           </main>
           ${tabbar()}
@@ -6559,8 +6515,8 @@
       return `
         <section class="action-panel">
           <div>
-            <h2>查器材</h2>
-            <p>借还在场馆机器完成，手机同步记录。</p>
+            <h2>开始借用</h2>
+            <p>选择器材 → 获取验证码 → 场馆 NFC 机器验证 → 完成借用。</p>
           </div>
           <div class="button-row">
             <button class="primary-button" data-route="list">${icon("search")} 查看器材</button>
@@ -6596,11 +6552,10 @@
     function equipmentCard(item) {
       return `
         <button class="equipment-card" data-detail="${item.id}" aria-label="查看${item.name}">
-          ${equipmentImage(item, "item-img")}<!-- [IMAGE-FN→item-img] 首页·热门器材网格 -->
+          ${equipmentImage(item, "item-img")}
           <span style="width:100%;">
             <strong style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.name}</strong>
-            <small>剩余 ${item.available}/${item.total}</small>
-            ${tag(item.status)}
+            <small>可借 ${item.available} 件</small>
           </span>
         </button>
       `;
@@ -6645,13 +6600,11 @@
     function listItem(item) {
       return `
         <button class="list-card" data-detail="${item.id}">
-          <span class="list-media">${equipmentImage(item, "list-img")}</span><!-- [IMAGE-FN→list-img] 器材列表页 -->
+          <span class="list-media">${equipmentImage(item, "list-img")}</span>
           <span>
             <strong>${item.name}</strong>
-            <small>${item.assetId} · ${cleanVenue(item.venue)}</small>
-            <small>剩余 ${item.available}/${item.total} · 良好率 ${item.health}%</small>
+            <small>可借 ${item.available} 件</small>
           </span>
-          ${tag(item.status)}
         </button>
       `;
     }
@@ -6664,24 +6617,15 @@
       const body = `
         <main class="scroll admin-dashboard-scroll">
           <section class="detail-card">
-            ${equipmentImage(item, "detail-img")}<!-- [IMAGE-FN→detail-img] 器材详情页主图 -->
+            ${equipmentImage(item, "detail-img")}
             <div class="detail-title">
               <div>
                 <h1>${item.name}</h1>
-                <p>${item.assetId}</p>
+                <p>可借 ${item.available} 件</p>
               </div>
-              ${tag(item.status)}
-            </div>
-            <p class="body-text">${item.desc}</p>
-            <div class="metric-row">
-              ${metric(item.available, "剩余")}
-              ${metric(item.total, "总量")}
-              ${metric(`${item.health}%`, "良好率")}
             </div>
             <div class="info-list">
-              <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
               <div><span>借用方式</span><strong>手机发起借用 → 获取验证码 → 场馆 NFC 机器验证 → 上传借出前照片生效</strong></div>
-              <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
             </div>
             <div class="duration-picker">
               <div class="duration-picker-head">
@@ -6689,7 +6633,7 @@
                 <span>1 节课 = ${CLASS_PERIOD_MINUTES} 分钟</span>
               </div>
               <div class="duration-options">${borrowDurationOptions()}</div>
-              <p class="machine-hint" style="margin:0;">当前选择：${durationText}，NFC 验证通过并上传借出前照片后按这个时间计算归还截止。</p>
+              <p class="machine-hint" style="margin:0;">当前选择：${durationText}</p>
             </div>
             <button class="primary-button" data-sync-borrow="${item.id}" ${item.available <= 0 ? "disabled" : ""}>${icon("bag")} 借用</button>
             <p class="machine-hint" style="margin-top:12px;">点击借用后将生成 6 位验证码，请前往场馆 NFC 识别机器输入验证码并贴 NFC 标签完成验证。</p>
@@ -6813,7 +6757,6 @@
                 <div><span>借出时间</span><strong>${loan.borrowedAt}</strong></div>
                 <div><span>借用时长</span><strong>${loan.durationLabel || "未设置"}</strong></div>
                 <div><span>归还截止</span><strong>${loan.dueAt || "未设置"}</strong></div>
-                <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
                 <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
               </div>
               ${needsBeforePhoto ? `
@@ -6897,8 +6840,7 @@
             <span class="list-media">${equipmentImage(item, "list-img")}</span><!-- [IMAGE-FN→list-img] 批量申请·器材选择 -->
             <span>
               <strong>${escapeHtml(item.name)}</strong>
-              <small>${escapeHtml(item.assetId)} · ${escapeHtml(cleanVenue(item.venue))}</small>
-              <small>剩余 ${item.available}/${item.total}</small>
+              <small>可借 ${item.available} 件</small>
             </span>
           </label>
           <label class="batch-qty">
@@ -6916,7 +6858,7 @@
     function batchRequestItemsHtml(request) {
       return `
         <div class="batch-item-list">
-          ${(request.items || []).map((item) => `<span class="batch-item-line">${escapeHtml(item.name)} × ${Number(item.qty || 0)} · ${escapeHtml(item.venue || "")}</span>`).join("")}
+          ${(request.items || []).map((item) => `<span class="batch-item-line">${escapeHtml(item.name)} × ${Number(item.qty || 0)}</span>`).join("")}
         </div>
       `;
     }
@@ -7234,11 +7176,9 @@
         : "暂无器材，先录入后学生端才会显示。";
       const equipmentStatus = store.equipment.length ? `${maintenanceCount} 需关注` : "未录入";
       const equipmentContent = `
-        ${adminMachineSyncCard()}
-        ${adminEquipmentForm()}
-        ${adminEquipmentFilterPanel()}
+        ${adminNfcScanForm()}
         <div class="list-stack">
-          ${filteredEquipment.length ? filteredEquipment.map(adminEquipmentRow).join("") : `<div class="empty">暂无匹配器材。换个关键词或状态试试。</div>`}
+          ${filteredEquipment.length ? filteredEquipment.map(adminEquipmentRow).join("") : `<div class="empty">暂无器材。请用上方 NFC 扫描录入。</div>`}
         </div>
       `;
       return {
@@ -7441,18 +7381,27 @@
       `;
     }
 
-    function adminMachineSyncCard() {
+    function adminNfcScanForm() {
+      const options = store.equipment.map((item) =>
+        `<option value="${escapeAttr(item.id)}">${escapeHtml(item.name)}</option>`
+      ).join("");
       return `
-        <form class="admin-machine-sync-card" id="adminMachineSyncForm">
+        <form class="admin-machine-sync-card" id="adminNfcScanForm">
           <div class="admin-machine-sync-head">
             <div>
-              <h3>机器入库同步</h3>
-              <p>机器端进入入库模式后扫码，网页只接收机器同步结果。</p>
+              <h3>NFC 扫描录入器材</h3>
+              <p>选择器材种类，然后扫描 NFC 标签自动录入 UID 并增加库存。</p>
             </div>
-            <span>入库数据</span>
+            <span class="admin-equipment-chip" id="adminNfcStatus">就绪</span>
           </div>
-          <textarea id="adminMachineInventory" placeholder="每行格式：器材编号,名称,分类,场馆,芯片号&#10;SL-PP-0616,乒乓球,乒乓球,东区体育馆,NFC-0001&#10;SL-PP-0616,乒乓球,乒乓球,东区体育馆,NFC-0002"></textarea>
-          <button class="primary-button" type="submit">${icon("refresh")} 同步入库结果</button>
+          <div style="display:grid;gap:12px;">
+            <label class="field" style="margin:0;">
+              <span>器材种类</span>
+              <select id="adminNfcEquipment">${options}</select>
+            </label>
+            <button class="primary-button" type="submit" id="adminNfcScanBtn">${icon("scan")} 扫描 NFC 标签</button>
+          </div>
+          <p style="margin:10px 0 0;color:var(--muted);font-size:12px;" id="adminNfcResult"></p>
         </form>
       `;
     }
@@ -7547,48 +7496,6 @@
             ${log.targetId ? `<span>${escapeHtml(log.targetId)}</span>` : ""}
           </div>
         </article>
-      `;
-    }
-
-    function adminEquipmentForm() {
-      return `
-        <form class="admin-equipment-form" id="adminEquipmentForm">
-          <div class="admin-equipment-form-grid">
-            <label class="field">
-              <span>器材名称</span>
-              <input id="adminEqName" maxlength="24" placeholder="例如 乒乓球拍" required />
-            </label>
-            <label class="field">
-              <span>器材编号</span>
-              <input id="adminEqAsset" maxlength="32" placeholder="例如 SL-PP-0001" required />
-            </label>
-            <label class="field">
-              <span>分类</span>
-              <input id="adminEqCategory" maxlength="20" placeholder="例如 乒乓球拍" required />
-            </label>
-            <label class="field">
-              <span>场馆</span>
-              <input id="adminEqVenue" maxlength="24" placeholder="例如 东区体育馆" required />
-            </label>
-            <label class="field">
-              <span>总量</span>
-              <input id="adminEqTotal" type="number" min="0" step="1" inputmode="numeric" placeholder="0" required />
-            </label>
-            <label class="field">
-              <span>可借数量</span>
-              <input id="adminEqAvailable" type="number" min="0" step="1" inputmode="numeric" placeholder="0" required />
-            </label>
-            <label class="field">
-              <span>图片地址</span>
-              <input id="adminEqImage" maxlength="180" placeholder="选填，如 assets/pingpong.png" />
-            </label>
-            <label class="field">
-              <span>说明</span>
-              <input id="adminEqDesc" maxlength="80" placeholder="选填，写借还或检测说明" />
-            </label>
-          </div>
-          <button class="primary-button" id="adminEquipmentSubmit" type="submit">${icon("check")} 录入器材</button>
-        </form>
       `;
     }
 
@@ -7761,37 +7668,23 @@
     }
 
     function adminEquipmentRow(item) {
-      const nfcCount = Array.isArray(item.nfcTags) ? item.nfcTags.length : 0;
-      const syncedText = item.machineSyncedAt ? item.machineSyncedAt.replace("T", " ").slice(0, 16) : "未同步";
-      const statusOptions = ["可借", "补充中", "维修中"].map((status) =>
-        `<option value="${escapeAttr(status)}" ${item.status === status ? "selected" : ""}>${escapeHtml(status)}</option>`
-      ).join("");
+      const tags = Array.isArray(item.nfcTags) ? item.nfcTags : [];
+      const nfcCount = tags.length;
       return `
         <article class="admin-equipment-row" data-admin-equipment-row="${escapeAttr(item.id)}">
-          <span class="list-media">${equipmentImage(item, "list-img")}</span><!-- [IMAGE-FN→list-img] 管理员·器材档案列表 -->
+          <span class="list-media">${equipmentImage(item, "list-img")}</span>
           <div class="admin-equipment-main">
             <strong>${escapeHtml(item.name)}</strong>
-            <small>${escapeHtml(item.assetId)} · ${escapeHtml(cleanVenue(item.venue))}</small>
-            <small>剩余 ${item.available}/${item.total}</small>
-            <div class="admin-equipment-tags">
-              <span class="admin-equipment-chip">芯片 ${nfcCount}</span>
-              <span class="admin-equipment-chip">同步 ${escapeHtml(syncedText)}</span>
-            </div>
+            <small>可借 ${item.available} / 总量 ${item.total}</small>
+            <small>NFC 标签 ${nfcCount} 个</small>
           </div>
-          <div class="admin-equipment-edit">
-            <label class="admin-mini-field">
-              总量
-              <input type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(item.total)}" data-admin-total />
-            </label>
-            <label class="admin-mini-field">
-              可借
-              <input type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(item.available)}" data-admin-available />
-            </label>
-            <label class="admin-mini-field">
-              状态
-              <select data-admin-status>${statusOptions}</select>
-            </label>
-            <button class="secondary-button" type="button" data-admin-save-equipment="${escapeAttr(item.id)}">${icon("check")} 保存</button>
+          <div style="grid-column:1/-1;margin-top:4px;">
+            ${tags.length ? tags.map((tag, i) => `
+              <span style="display:inline-flex;align-items:center;gap:6px;margin:2px 4px;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,0.06);font-size:11px;color:rgba(255,255,255,0.8);">
+                ${escapeHtml(String(tag))}
+                <button data-admin-delete-tag="${escapeAttr(item.id)}" data-tag-value="${escapeAttr(String(tag))}" style="color:#f87171;background:none;border:0;cursor:pointer;font-size:14px;line-height:1;padding:0;">&times;</button>
+              </span>
+            `).join("") : `<span style="color:rgba(255,255,255,0.3);font-size:11px;">暂无 NFC 标签</span>`}
           </div>
         </article>
       `;
@@ -9723,74 +9616,6 @@
       render();
     }
 
-    async function submitAdminEquipmentForm(event) {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const name = normalizeIdentityText(form.querySelector("#adminEqName").value);
-      const assetId = normalizeIdentityText(form.querySelector("#adminEqAsset").value).toUpperCase();
-      const category = normalizeIdentityText(form.querySelector("#adminEqCategory").value);
-      const venue = normalizeIdentityText(form.querySelector("#adminEqVenue").value);
-      const image = String(form.querySelector("#adminEqImage").value || "").trim();
-      const desc = normalizeIdentityText(form.querySelector("#adminEqDesc").value);
-      const total = Number(form.querySelector("#adminEqTotal").value);
-      const available = Number(form.querySelector("#adminEqAvailable").value);
-
-      if (!name || !assetId || !category || !venue) {
-        state.notice = "器材名称、编号、分类和场馆都要填写";
-        render();
-        return;
-      }
-      if (!Number.isInteger(total) || !Number.isInteger(available) || total < 0 || available < 0) {
-        state.notice = "数量必须是 0 或正整数";
-        render();
-        return;
-      }
-      if (available > total) {
-        state.notice = "可借数量不能大于总量";
-        render();
-        return;
-      }
-      if (store.equipment.some((item) => item.assetId === assetId)) {
-        state.notice = "这个器材编号已经存在，不能重复录入";
-        render();
-        return;
-      }
-
-      const item = {
-        id: `eq-${makeUuid()}`,
-        assetId,
-        name,
-        category,
-        image,
-        total,
-        available,
-        status: available > 0 ? "可借" : "补充中",
-        health: 100,
-        venue,
-        desc: desc || "管理员录入器材，按场馆机器扫码借还。",
-        nfcTags: [],
-        machineSyncedAt: "",
-      };
-
-      try {
-        await createRemoteEquipment(item);
-      } catch (error) {
-        state.notice = error.message || "器材录入失败";
-        render();
-        return;
-      }
-
-      store.equipment.unshift(item);
-      createAdminOperationLog("录入器材", "equipment", item.id, `${item.name} 已录入，数量 ${available}/${total}`, {
-        assetId: item.assetId,
-        category: item.category,
-        venue: item.venue,
-      });
-      saveStore();
-      state.notice = "器材已录入";
-      render();
-    }
-
     function activeLoanCountForEquipment(equipmentId) {
       return store.loans.filter((loan) =>
         loan.equipmentId === equipmentId && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status)
@@ -9889,92 +9714,87 @@
       return { items, addedChipCount, duplicateCount, duplicateTags, syncedAt };
     }
 
-    async function submitAdminMachineSync(event) {
+    async function handleAdminNfcScan(event) {
       event.preventDefault();
-      try {
-        const parsed = parseMachineInventoryText(event.currentTarget.querySelector("#adminMachineInventory").value);
-        const syncResult = machineInventoryItemsFromGroups(parsed.groups);
-        const syncedItems = syncResult.items;
-        if (syncedItems.length) await upsertRemoteEquipmentBatch(syncedItems);
-        syncedItems.forEach((item) => {
-          const current = store.equipment.find((equipment) => equipment.assetId === item.assetId);
-          if (current) Object.assign(current, item);
-          else store.equipment.unshift(item);
-        });
-        const duplicateCount = syncResult.duplicateCount + parsed.duplicateTags.length;
-        const summary = syncResult.addedChipCount
-          ? `机器入库新增 ${syncResult.addedChipCount} 个芯片`
-          : "机器入库没有新增芯片";
-        createMachineSyncLog({
-          mode: "入库同步",
-          itemCount: syncedItems.length,
-          chipCount: syncResult.addedChipCount,
-          duplicateCount,
-          failedCount: 0,
-          summary,
-          details: {
-            inputCount: parsed.inputCount,
-            duplicateTags: syncResult.duplicateTags.concat(parsed.duplicateTags).slice(0, 30),
-            assetIds: syncedItems.map((item) => item.assetId),
-          },
-        });
-        createAdminOperationLog("机器入库同步", "machine_sync", "", summary, {
-          itemCount: syncedItems.length,
-          chipCount: syncResult.addedChipCount,
-          duplicateCount,
-        });
-        saveStore();
-        state.notice = duplicateCount
-          ? `已入库 ${syncResult.addedChipCount} 个芯片，${duplicateCount} 个重复芯片未重复增加`
-          : `已入库 ${syncResult.addedChipCount} 个芯片`;
-      } catch (error) {
-        createMachineSyncLog({
-          mode: "入库同步失败",
-          itemCount: 0,
-          chipCount: 0,
-          duplicateCount: 0,
-          failedCount: 1,
-          summary: error.message || "机器入库同步失败",
-          details: { reason: error.message || "" },
-        });
-        state.notice = error.message || "机器库存同步失败";
+      const select = document.querySelector("#adminNfcEquipment");
+      const statusEl = document.querySelector("#adminNfcStatus");
+      const resultEl = document.querySelector("#adminNfcResult");
+      const btn = document.querySelector("#adminNfcScanBtn");
+      const equipmentId = select?.value;
+      const item = byId(equipmentId);
+      if (!item) {
+        if (resultEl) resultEl.textContent = "未找到对应器材";
+        return;
       }
-      render();
+
+      if (!supportsNfc()) {
+        if (resultEl) resultEl.textContent = "此设备不支持 NFC，请用安卓手机 + Chrome 浏览器";
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+      if (statusEl) statusEl.textContent = "扫描中...";
+      if (resultEl) resultEl.textContent = "请将 NFC 标签贴到设备背面";
+
+      try {
+        const { serialNumber } = await scanNfcTag(30000);
+        const tagId = normalizeNfcSerial(serialNumber);
+
+        const existingIndex = new Map();
+        store.equipment.forEach((eq) => {
+          (Array.isArray(eq.nfcTags) ? eq.nfcTags : []).forEach((tag) => {
+            existingIndex.set(normalizeNfcSerial(tag), eq.id);
+          });
+        });
+
+        if (existingIndex.has(tagId)) {
+          const boundEq = byId(existingIndex.get(tagId));
+          if (resultEl) resultEl.textContent = `该标签已绑定到「${boundEq ? boundEq.name : "其他器材"}」，不能重复录入`;
+          if (statusEl) statusEl.textContent = "重复";
+          return;
+        }
+
+        if (!Array.isArray(item.nfcTags)) item.nfcTags = [];
+        item.nfcTags.push(tagId);
+        item.total += 1;
+        item.available += 1;
+        item.status = item.available > 0 ? "可借" : "补充中";
+
+        await updateRemoteEquipment(item);
+        saveStore();
+        createAdminOperationLog("NFC录入器材", "equipment", item.id, `${item.name} 新增 NFC 标签 ${tagId}，库存 +1`);
+        if (statusEl) statusEl.textContent = "成功";
+        if (resultEl) resultEl.textContent = `${item.name} 已录入 · UID: ${tagId} · 当前库存 ${item.available}/${item.total}`;
+      } catch (err) {
+        if (statusEl) statusEl.textContent = "失败";
+        if (resultEl) resultEl.textContent = err.message || "NFC 扫描失败";
+      } finally {
+        if (btn) btn.disabled = false;
+        render();
+      }
     }
 
-    async function saveAdminEquipmentEdit(equipmentId, row) {
+    async function handleAdminDeleteTag(equipmentId, tagValue) {
       const item = byId(equipmentId);
-      if (!item || !row) return;
-      const total = Number(row.querySelector("[data-admin-total]").value);
-      const available = Number(row.querySelector("[data-admin-available]").value);
-      const status = row.querySelector("[data-admin-status]").value;
-      if (!Number.isInteger(total) || !Number.isInteger(available) || total < 0 || available < 0) {
-        state.notice = "数量必须是 0 或正整数";
-        render();
-        return;
-      }
-      if (available > total) {
-        state.notice = "可借数量不能大于总量";
-        render();
-        return;
-      }
-
-      const previous = { total: item.total, available: item.available, status: item.status };
-      item.total = total;
-      item.available = available;
-      item.status = status;
+      if (!item) return;
+      const tags = Array.isArray(item.nfcTags) ? item.nfcTags : [];
+      const idx = tags.findIndex((tag) => String(tag) === String(tagValue));
+      if (idx < 0) return;
+      tags.splice(idx, 1);
+      item.nfcTags = tags;
+      item.total = Math.max(0, item.total - 1);
+      item.available = Math.max(0, Math.min(item.available, item.total));
+      if (item.total === 0) item.status = "补充中";
       try {
         await updateRemoteEquipment(item);
-        createAdminOperationLog("修改器材库存", "equipment", item.id, `${item.name} 库存改为 ${available}/${total}，状态 ${status}`, {
-          previous,
-          next: { total, available, status },
-          assetId: item.assetId,
-        });
+        createAdminOperationLog("删除NFC标签", "equipment", item.id, `${item.name} 删除 NFC 标签 ${tagValue}`);
         saveStore();
-        state.notice = "器材库存已保存";
-      } catch (error) {
-        Object.assign(item, previous);
-        state.notice = error.message || "器材库存保存失败";
+        state.notice = "NFC 标签已删除";
+      } catch (err) {
+        item.total += 1;
+        item.available += 1;
+        tags.push(tagValue);
+        state.notice = err.message || "删除失败";
       }
       render();
     }
@@ -10138,34 +9958,13 @@
       if (identityForm) identityForm.addEventListener("submit", submitIdentityForm);
       const adminContactForm = document.querySelector("#adminContactForm");
       if (adminContactForm) adminContactForm.addEventListener("submit", submitAdminContactForm);
-      const adminEquipmentForm = document.querySelector("#adminEquipmentForm");
-      if (adminEquipmentForm) adminEquipmentForm.addEventListener("submit", submitAdminEquipmentForm);
-      const adminMachineSyncForm = document.querySelector("#adminMachineSyncForm");
-      if (adminMachineSyncForm) adminMachineSyncForm.addEventListener("submit", submitAdminMachineSync);
-      const adminEquipmentSearch = document.querySelector("#adminEquipmentSearch");
-      if (adminEquipmentSearch) {
-        adminEquipmentSearch.addEventListener("input", (event) => {
-          state.adminEquipmentQuery = event.target.value;
-          render();
-          const next = document.querySelector("#adminEquipmentSearch");
-          if (next) {
-            next.focus();
-            next.setSelectionRange(next.value.length, next.value.length);
-          }
-        });
-      }
-      const adminEquipmentStatusFilter = document.querySelector("#adminEquipmentStatusFilter");
-      if (adminEquipmentStatusFilter) {
-        adminEquipmentStatusFilter.addEventListener("change", (event) => {
-          state.adminEquipmentStatus = event.target.value;
-          render();
-        });
-      }
+      const adminNfcScanForm = document.querySelector("#adminNfcScanForm");
+      if (adminNfcScanForm) adminNfcScanForm.addEventListener("submit", handleAdminNfcScan);
+      document.querySelectorAll("[data-admin-delete-tag]").forEach((node) =>
+        node.addEventListener("click", () => handleAdminDeleteTag(node.dataset.adminDeleteTag, node.dataset.tagValue))
+      );
       document.querySelectorAll("[data-admin-export]").forEach((node) =>
         node.addEventListener("click", () => exportAdminData(node.dataset.adminExport))
-      );
-      document.querySelectorAll("[data-admin-save-equipment]").forEach((node) =>
-        node.addEventListener("click", () => saveAdminEquipmentEdit(node.dataset.adminSaveEquipment, node.closest("[data-admin-equipment-row]")))
       );
       document.querySelectorAll("[data-admin-route]").forEach((node) =>
         node.addEventListener("click", () => {
