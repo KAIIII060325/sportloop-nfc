@@ -9193,6 +9193,16 @@
     }
 
     function nfcMachinePage() {
+      let stepContent;
+      if (nfcMachineState.step === "scan") {
+        const item = byId(nfcMachineState.equipmentId) || { name: nfcMachineState.equipmentName, assetId: nfcMachineState.equipmentAssetId };
+        const loan = { studentName: nfcMachineState.studentName, studentId: nfcMachineState.studentId || "" };
+        stepContent = nfcMachineStepScan(loan, item);
+      } else if (nfcMachineState.step === "result") {
+        stepContent = nfcMachineStepResult(nfcMachineState.resultSuccess, nfcMachineState.resultTitle, nfcMachineState.resultDesc);
+      } else {
+        stepContent = nfcMachineStepCode();
+      }
       return `
         <section class="nfc-machine-screen">
           <header class="nfc-machine-header">
@@ -9200,10 +9210,10 @@
             <span class="nfc-machine-badge">NFC 验证机</span>
           </header>
           <div class="nfc-machine-body">
-            ${nfcMachineStepCode()}
+            ${stepContent}
           </div>
           <div style="text-align:center;padding-bottom:28px;">
-            <button class="nfc-machine-back-link" data-route="home">退出机器模式</button>
+            <button class="nfc-machine-back-link" data-route="admin">退出机器模式</button>
           </div>
         </section>
       `;
