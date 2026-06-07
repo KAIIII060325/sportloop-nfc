@@ -6822,7 +6822,7 @@
           <div class="timeline">${history.length ? history.map(historyRow).join("") : `<div class="empty">暂无历史记录。</div>`}</div>
         </main>
       `;
-      return shell("我的借用", body, { left: "none" });
+      return shell("我的借用", body);
     }
 
     function pendingNfcCard(loan) {
@@ -7204,7 +7204,7 @@
           </div>
         </main>
       `;
-      return shell("消息", body, { left: "none" });
+      return shell("消息", body);
     }
 
     function adminDashboardData() {
@@ -9267,6 +9267,7 @@
       return `
         <section class="nfc-machine-screen">
           <header class="nfc-machine-header">
+            <button class="icon-button" data-back aria-label="返回" style="color:#fff;border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);">${icon("back")}</button>
             <h1>SportLoop</h1>
             <span class="nfc-machine-badge">NFC 验证机</span>
           </header>
@@ -9455,6 +9456,10 @@
     }
 
     function bindNfcMachine() {
+      document.querySelectorAll("[data-back]").forEach((node) => node.addEventListener("click", () => {
+        resetNfcMachineState();
+        back();
+      }));
       const codeBtn = document.querySelector("#nfcMachineCodeBtn");
       if (codeBtn) {
         codeBtn.addEventListener("click", handleNfcMachineCodeSubmit);
