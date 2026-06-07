@@ -7960,9 +7960,14 @@
       }
       const existing = store.loans.find((loan) => loan.equipmentId === equipmentId && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       if (existing) {
-        state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
-        if (!options.skipNavigate) render();
-        return existing;
+        if (existing.status === "等待NFC验证" && isVerificationCodeExpired(existing)) {
+          store.loans = store.loans.filter((loan) => loan.id !== existing.id);
+          saveStore();
+        } else {
+          state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
+          if (!options.skipNavigate) render();
+          return existing;
+        }
       }
       if (item.available <= 0 || item.status === "维修中") {
         state.notice = "场馆暂无可用库存";
