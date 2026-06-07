@@ -6200,7 +6200,26 @@
     }
 
     function activeBorrowLoans() {
-      return store.loans.filter((loan) => ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+      return store.loans.filter((loan) => ["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+    }
+
+    function pendingNfcLoans() {
+      return store.loans.filter((loan) => loan.status === "等待NFC验证").filter((loan) => !isVerificationCodeExpired(loan));
+    }
+
+    function expiredNfcLoans() {
+      return store.loans.filter((loan) => loan.status === "等待NFC验证" && isVerificationCodeExpired(loan));
+    }
+
+    async function cancelPendingBorrow(loanId) {
+      const loan = loanById(loanId);
+      if (!loan || loan.status !== "等待NFC验证") return;
+      loan.status = "已取消";
+      saveStore();
+      runRemote(() => supabaseRequest(`loans?id=eq.${loan.id}`, { method: "PATCH", body: { status: "已取消" } }));
+      pushMessage("借用已取消", `验证码 ${loan.verificationCode || ""} 的借用申请已取消。`);
+      state.notice = "借用申请已取消";
+      render();
     }
 
     function confirmedBorrowLoans() {
@@ -6781,10 +6800,15 @@
     }
 
     function borrowPage() {
+      const pending = pendingNfcLoans();
       const active = activeBorrowLoans();
       const history = store.loans.filter((loan) => !["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       const body = `
         <main class="scroll">
+          ${pending.length ? `
+          <div class="section-head"><h2>待 NFC 验证</h2></div>
+          <div class="list-stack">${pending.map(pendingNfcCard).join("")}</div>
+          ` : ""}
           <section class="action-panel" style="margin-bottom:14px;">
             <div>
               <h2>批量借出申请</h2>
@@ -6793,12 +6817,37 @@
             <button class="primary-button" data-route="batchBorrow">${icon("bag")} 去申请</button>
           </section>
           <div class="section-head"><h2>当前借用</h2></div>
-          ${active.length ? active.map(loanCard).join("") : `<div class="empty">还没有借用记录。请先在器材详情页发起借用，获取验证码后前往场馆 NFC 机器完成验证。</div>`}
+          ${active.length ? active.map(loanCard).join("") : `<div class="empty">还没有进行中的借用。在器材详情页发起借用，获得验证码后前往场馆 NFC 机器完成验证。</div>`}
           <div class="section-head"><h2>历史记录</h2></div>
           <div class="timeline">${history.length ? history.map(historyRow).join("") : `<div class="empty">暂无历史记录。</div>`}</div>
         </main>
       `;
       return shell("我的借用", body, { left: "none" });
+    }
+
+    function pendingNfcCard(loan) {
+      const item = byId(loan.equipmentId);
+      if (!item) return "";
+      const expiresIn = loan.verificationCodeExpiresAt
+        ? Math.max(0, Math.round((new Date(loan.verificationCodeExpiresAt).getTime() - Date.now()) / 60000))
+        : 5;
+      return `
+        <section class="borrow-card" style="margin-bottom:14px;border-left:3px solid var(--brand);">
+          <div class="borrow-head">
+            ${equipmentImage(item, "loan-thumb")}
+            <div>
+              <h2>${item.name}</h2>
+              <p style="font-size:13px;margin-top:4px;color:var(--brand);font-weight:800;">验证码：${loan.verificationCode || "------"}（${expiresIn} 分钟有效）</p>
+              <p style="font-size:11px;margin-top:2px;">${loan.borrowedAt} · ${loan.durationLabel || ""}</p>
+              ${tag(loanDisplayStatus(loan))}
+            </div>
+          </div>
+          <div class="button-row" style="margin-top:10px;">
+            <button class="secondary-button" data-view-code="${loan.id}" style="color:var(--brand);">${icon("scan")} 查看验证码</button>
+            <button class="secondary-button" data-cancel-borrow="${loan.id}" style="color:var(--bad);">${icon("alert")} 取消借用</button>
+          </div>
+        </section>
+      `;
     }
 
     function batchBorrowPage() {
@@ -7961,14 +8010,20 @@
       const existing = store.loans.find((loan) => loan.equipmentId === equipmentId && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       if (existing) {
         if (existing.status === "等待NFC验证" && isVerificationCodeExpired(existing)) {
-          store.loans = store.loans.filter((loan) => loan.id !== existing.id);
+          const newCode = generateVerificationCode();
+          existing.verificationCode = newCode;
+          existing.verificationCodeExpiresAt = verificationCodeExpiresAt();
+          existing.borrowedAtMs = Date.now();
+          existing.borrowedAt = formatDateTime(existing.borrowedAtMs);
           saveStore();
-          runRemote(() => supabaseRequest(`loans?id=eq.${existing.id}`, { method: "PATCH", body: { status: "已取消" } }));
-        } else {
-          state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
-          if (!options.skipNavigate) render();
+          runRemote(() => supabaseRequest(`loans?id=eq.${existing.id}`, { method: "PATCH", body: { verification_code: newCode, verification_code_expires_at: existing.verificationCodeExpiresAt, borrowed_at: toIso(existing.borrowedAtMs) } }));
+          if (options.skipNavigate) return existing;
+          route("borrowConfirm", { loanId: existing.id });
           return existing;
         }
+        state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
+        if (!options.skipNavigate) render();
+        return existing;
       }
       if (item.available <= 0 || item.status === "维修中") {
         state.notice = "场馆暂无可用库存";
@@ -10088,6 +10143,18 @@
           state.activeLoanId = result.id;
           route("borrowConfirm", { loanId: result.id });
         });
+      }));
+      document.querySelectorAll("[data-cancel-borrow]").forEach((node) => node.addEventListener("click", () => {
+        const loan = loanById(node.dataset.cancelBorrow);
+        if (!loan) return;
+        const item = byId(loan.equipmentId);
+        showConfirm(`确定取消「${item ? item.name : "器材"}」的借用申请吗？`, () => {
+          cancelPendingBorrow(node.dataset.cancelBorrow);
+        }, "确认取消");
+      }));
+      document.querySelectorAll("[data-view-code]").forEach((node) => node.addEventListener("click", () => {
+        state.activeLoanId = node.dataset.viewCode;
+        route("borrowConfirm", { loanId: node.dataset.viewCode });
       }));
       document.querySelectorAll("[data-sync-return]").forEach((node) => node.addEventListener("click", () => {
         route("scanBorrow", { loanId: node.dataset.syncReturn, syncContext: "return" });
