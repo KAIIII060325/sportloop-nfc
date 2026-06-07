@@ -5766,7 +5766,7 @@
       return ["home", "list", "borrow", "batchBorrow", "renew", "messages", "admin", ...Object.values(adminModuleRoutes), "profile", "profileInfo", "creditRules", "identity", "contactAdmin"].includes(to);
     }
 
-    const adminRoutes = new Set(["admin", ...Object.values(adminModuleRoutes)]);
+    const adminRoutes = new Set(["admin", "nfcMachine", ...Object.values(adminModuleRoutes)]);
     const studentRoutes = new Set([
       "home", "list", "detail", "scanBorrow", "borrowConfirm", "borrow", "batchBorrow", "renew", "renewDetail",
       "detect", "result", "report", "messages", "contactAdmin", "nfcMachine", "profile", "profileInfo", "creditRules", "identity",
@@ -7274,6 +7274,7 @@
               ${adminActivityRing(data.progress)}
             </div>
           </section>
+          <button class="primary-button" data-route="nfcMachine" style="margin-bottom:14px;min-height:52px;font-size:16px;">${icon("scan")} 打开 NFC 验证机模式</button>
           ${adminQuickNav(adminModuleCards(data))}
           <div class="admin-kpi-grid">
             ${adminKpi("待回复", data.waitingMessages.length, "条", "message")}
