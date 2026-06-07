@@ -5168,8 +5168,9 @@
 
     function handleLogout() {
       showConfirm("确定要退出当前账号吗？", () => {
+        resetNfcMachineState();
         clearAuthSession();
-        state.route = "credentials";
+        state.route = "login";
         state.notice = "已退出登录";
         render();
       }, "退出登录");
@@ -5650,6 +5651,7 @@
     }
 
     function roleMismatchMessage(actualRole) {
+      if (state.loginRole === "machine" && actualRole !== "admin") return "NFC 机器端需要管理员账号，请使用管理员账号登录";
       return actualRole === "admin" ? "这是管理员账号，请从管理员端登录" : "这是学生账号，请从学生端登录";
     }
 
@@ -5659,6 +5661,7 @@
 
     function ensureRoleMatch(requestedRole, actualRole) {
       if (requestedRole === actualRole) return;
+      if (requestedRole === "machine" && actualRole === "admin") return;
       throw new Error(roleMismatchMessage(actualRole));
     }
 
@@ -5689,7 +5692,9 @@
         reportRemoteSyncError(error);
       }
       state.loading = false;
-      state.route = actualRole === "admin" ? "admin" : "home";
+      state.route = actualRole === "admin"
+        ? (authSession.role === "machine" ? "nfcMachine" : "admin")
+        : "home";
       state.notice = actualRole === "admin" && !state.isAdmin ? "管理员账号已登录，等待授权" : "";
       render();
     }
@@ -5773,11 +5778,17 @@
     ]);
 
     function currentUserRole() {
-      return (authSession?.role || state.loginRole) === "admin" ? "admin" : "student";
+      const role = authSession?.role || state.loginRole;
+      if (role === "machine") return "machine";
+      return role === "admin" ? "admin" : "student";
     }
 
     function normalizeRouteForRole(to) {
       if (!state.loggedIn) return to;
+      if (currentUserRole() === "machine") {
+        if (to === "nfcMachine" || to === "login" || to === "roleSelect") return to;
+        return "nfcMachine";
+      }
       if (currentUserRole() === "admin") return adminRoutes.has(to) ? to : "admin";
       if (adminRoutes.has(to)) return "home";
       return studentRoutes.has(to) ? to : "home";
@@ -7368,7 +7379,6 @@
               ${adminActivityRing(data.progress)}
             </div>
           </section>
-          <button class="primary-button" data-route="nfcMachine" style="margin-bottom:14px;min-height:52px;font-size:16px;">${icon("scan")} 打开 NFC 验证机模式</button>
           ${adminQuickNav(adminModuleCards(data))}
           <div class="admin-kpi-grid">
             ${adminKpi("待回复", data.waitingMessages.length, "条", "message")}
@@ -8784,6 +8794,11 @@
                 <h2>管理员端</h2>
                 <p>处理报修工单、器材维保、库存状态管理</p>
               </button>
+              <button class="role-card" data-role="machine">
+                <div class="role-icon">${icon("scan")}</div>
+                <h2>NFC 机器端</h2>
+                <p>场馆验证机专用，需管理员账号登录</p>
+              </button>
             </div>
           </main>
         </section>
@@ -8791,19 +8806,21 @@
     }
 
     function credentialsPage() {
-      const isAdmin = state.loginRole === "admin";
+      const isAdmin = state.loginRole === "admin" || state.loginRole === "machine";
+      const isMachine = state.loginRole === "machine";
+      const roleLabel = isMachine ? "NFC 机器端" : (isAdmin ? "管理员" : "学生");
       return `
         <section class="screen">
           <header class="topbar">
             <button class="icon-button" data-route="roleSelect" aria-label="返回">${icon("back")}</button>
-            <div class="page-title">${isAdmin ? "管理员登录" : "学生登录"}</div>
+            <div class="page-title">${roleLabel}登录</div>
             <span></span>
           </header>
           <main class="scroll">
             <form class="login-form" id="loginForm">
               <div class="login-avatar">
-                <div class="role-badge">${icon(isAdmin ? "shield" : "user")}</div>
-                <span>${isAdmin ? "管理员" : "学生"}</span>
+                <div class="role-badge">${icon(isMachine ? "scan" : (isAdmin ? "shield" : "user"))}</div>
+                <span>${roleLabel}</span>
               </div>
               <label class="field">
                 <span>账号</span>
@@ -9299,15 +9316,12 @@
       return `
         <section class="nfc-machine-screen">
           <header class="nfc-machine-header">
-            <button class="icon-button" data-back aria-label="返回" style="color:#fff;border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);">${icon("back")}</button>
+            <button class="icon-button" data-logout aria-label="退出" style="color:#fff;border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);">${icon("logout")}</button>
             <h1>SportLoop</h1>
             <span class="nfc-machine-badge">NFC 验证机</span>
           </header>
           <div class="nfc-machine-body">
             ${stepContent}
-          </div>
-          <div style="text-align:center;padding-bottom:28px;">
-            <button class="nfc-machine-back-link" data-route="admin">退出机器模式</button>
           </div>
         </section>
       `;
@@ -9488,6 +9502,7 @@
     }
 
     function bindNfcMachine() {
+      document.querySelectorAll("[data-logout]").forEach((node) => node.addEventListener("click", handleLogout));
       document.querySelectorAll("[data-back]").forEach((node) => node.addEventListener("click", () => {
         resetNfcMachineState();
         back();
@@ -9535,6 +9550,9 @@
       document.querySelectorAll("[data-route]").forEach((node) => {
         node.addEventListener("click", () => {
           resetNfcMachineState();
+          if (node.dataset.route === "login") {
+            clearAuthSession();
+          }
           route(node.dataset.route);
         });
       });
