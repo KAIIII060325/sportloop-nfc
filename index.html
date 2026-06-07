@@ -10239,7 +10239,7 @@
         }, 2600);
       }
 
-      if (state.route === "borrow" && pendingNfcLoans().length > 0) {
+      if (state.route === "borrow" && (pendingNfcLoans().length > 0 || store.loans.some((loan) => loan.status === "待补借出照片" && !loan.beforePhotoDataUrl))) {
         window.clearTimeout(window.__borrowPollTimer);
         window.__borrowPollTimer = window.setTimeout(async () => {
           try { await refreshRemoteStore(); } catch (_) { /* ignore */ }
