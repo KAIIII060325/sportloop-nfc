@@ -10222,6 +10222,14 @@
         }, 2600);
       }
 
+      if (state.route === "borrow" && pendingNfcLoans().length > 0) {
+        window.clearTimeout(window.__borrowPollTimer);
+        window.__borrowPollTimer = window.setTimeout(async () => {
+          try { await refreshRemoteStore(); } catch (_) { /* ignore */ }
+          if (state.route === "borrow") render();
+        }, 5000);
+      }
+
       document.querySelectorAll("[data-category]").forEach((node) => node.addEventListener("click", () => { state.category = node.dataset.category; render(); }));
       document.querySelectorAll("[data-loan-detect]").forEach((node) => node.addEventListener("click", () => route("detect", { loanId: node.dataset.loanDetect })));
       document.querySelectorAll("[data-borrow-confirm]").forEach((node) => node.addEventListener("click", () => route("borrowConfirm", { loanId: node.dataset.borrowConfirm })));
