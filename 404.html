@@ -4061,6 +4061,189 @@
       font-weight: 800;
     }
 
+    /* ==================== NFC 扫描弹窗样式 ==================== */
+    .nfc-scan-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      background: rgba(5, 5, 6, 0.92);
+      backdrop-filter: blur(16px);
+      animation: nfcFadeIn 0.24s ease;
+    }
+
+    @keyframes nfcFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .nfc-scan-dialog {
+      width: min(100%, 300px);
+      padding: 32px 24px 22px;
+      border-radius: 28px;
+      text-align: center;
+      color: #ffffff;
+      background: rgba(24, 22, 32, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      animation: nfcDialogPop 0.32s ease;
+    }
+
+    @keyframes nfcDialogPop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .nfc-scan-dialog h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    .nfc-scan-dialog .nfc-hint {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    .nfc-scan-dialog .nfc-hint strong {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+    }
+
+    .nfc-scan-icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--brand);
+      background: rgba(159, 18, 57, 0.14);
+      border: 2px solid rgba(159, 18, 57, 0.3);
+      animation: nfcRingPulse 1.5s ease-in-out infinite;
+    }
+
+    .nfc-scan-icon svg {
+      width: 42px;
+      height: 42px;
+    }
+
+    @keyframes nfcRingPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(159, 18, 57, 0.4); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 16px rgba(159, 18, 57, 0); }
+    }
+
+    .nfc-scan-dialog .nfc-scan-error-icon {
+      color: var(--bad);
+      background: rgba(161, 15, 43, 0.14);
+      border-color: rgba(161, 15, 43, 0.3);
+      animation: none;
+    }
+
+    .nfc-scan-dialog .nfc-scan-success-icon {
+      color: var(--ok);
+      background: rgba(22, 116, 68, 0.14);
+      border-color: rgba(22, 116, 68, 0.3);
+      animation: none;
+    }
+
+    .nfc-scan-dialog .nfc-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .nfc-scan-dialog .nfc-btn-cancel {
+      min-height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      background: transparent;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .nfc-scan-dialog .nfc-btn-cancel:active {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nfc-scan-dialog .nfc-btn-retry {
+      min-height: 44px;
+      border: 0;
+      border-radius: 14px;
+      color: #ffffff;
+      background: var(--brand);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .nfc-scan-dialog .nfc-btn-retry:active {
+      background: var(--brand-deep);
+    }
+
+    .nfc-scan-dialog .nfc-btn-retry:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* NFC 扫描中设备图示 */
+    .nfc-device-visual {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 22px;
+      display: grid;
+      place-items: center;
+    }
+
+    .nfc-device-visual .nfc-wave {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(159, 18, 57, 0.3);
+      border-radius: 50%;
+      animation: nfcWave 1.8s ease-out infinite;
+    }
+
+    .nfc-device-visual .nfc-wave:nth-child(2) {
+      animation-delay: 0.6s;
+    }
+
+    .nfc-device-visual .nfc-wave:nth-child(3) {
+      animation-delay: 1.2s;
+    }
+
+    @keyframes nfcWave {
+      0% { transform: scale(0.3); opacity: 0.9; }
+      100% { transform: scale(1.1); opacity: 0; }
+    }
+
+    .nfc-device-core {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--brand);
+      box-shadow: 0 12px 28px rgba(159, 18, 57, 0.5);
+      z-index: 2;
+    }
+
+    .nfc-device-core svg {
+      width: 34px;
+      height: 34px;
+    }
+
     @media (min-width: 1024px) {
       .stage {
         min-height: 100vh;
@@ -4470,8 +4653,8 @@
     // 💡 强刷版本键名，绕过老旧的缓存干扰，促使全新首页布局立刻下发
     const STORAGE_KEY = "sportloop-ios-app-v7";
     const AUTH_STORAGE_KEY = "sportloop-supabase-auth-v1";
-    const SUPABASE_URL = "https://jwylvubakymfkdncuwhp.supabase.co";
-    const SUPABASE_PUBLIC_KEY = "sb_publishable_LQqefYrKcOKLIqqFqNTjgQ_qFjyZOB8";
+    const SUPABASE_URL = "https://udxcarumabyqfbnrpqxa.supabase.co";
+    const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkeGNhcnVtYWJ5cWZibnJwcXhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4Mzc0ODMsImV4cCI6MjA5NjQxMzQ4M30.JDdY_2jC1zsl-MZu21b975INP2F0Gew4LZ9xl7GUh4k";
 
     // 替换 assets 下同名图片后，把此数字 +1，可避免浏览器继续显示旧图缓存
     const ASSET_VERSION = "12";
@@ -5441,6 +5624,8 @@
           renewed_times: loan.renewedTimes || 0,
           renewal_records: loan.renewalRecords || [],
           batch_request_id: loan.batchRequestId || null,
+          nfc_serial: loan.nfcSerial || "",
+          nfc_verified_at: loan.nfcVerifiedAt || null,
         },
       });
     }
@@ -5466,6 +5651,8 @@
           return_photo_data_url: loan.returnPhotoDataUrl || "",
           return_machine_allowed: Boolean(loan.returnMachineAllowed),
           batch_request_id: loan.batchRequestId || null,
+          nfc_serial: loan.nfcSerial || "",
+          nfc_verified_at: loan.nfcVerifiedAt || null,
         },
       });
     }
@@ -6156,13 +6343,21 @@
     }
 
     function flow() {
-      const steps = [
-        ["手机看状态", "search"],
-        ["机器扫条码", "scan"],
-        ["同步记录", "bag"],
-        ["拍照检测", "camera"],
-        ["管理员维保", "wrench"],
-      ];
+      const steps = supportsNfc()
+        ? [
+            ["手机看状态", "search"],
+            ["NFC 触碰验证", "scan"],
+            ["同步记录", "bag"],
+            ["拍照检测", "camera"],
+            ["管理员维保", "wrench"],
+          ]
+        : [
+            ["手机看状态", "search"],
+            ["机器扫条码", "scan"],
+            ["同步记录", "bag"],
+            ["拍照检测", "camera"],
+            ["管理员维保", "wrench"],
+          ];
       return `<div class="flow">${steps.map(([label, svg], index) => `<div><i>${icon(svg)}</i><b>${index + 1}</b><span>${label}</span></div>`).join("")}</div>`;
     }
 
@@ -6229,7 +6424,7 @@
             </div>
             <div class="info-list">
               <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
-              <div><span>借用方式</span><strong>机器先扫码，手机上传借出前照片后生效</strong></div>
+              <div><span>借用方式</span><strong>${supportsNfc() ? "触碰器材 NFC 标签验证，上传借出前照片后生效" : "机器先扫码，手机上传借出前照片后生效"}</strong></div>
               <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
             </div>
             <div class="duration-picker">
@@ -6241,7 +6436,7 @@
               <p class="machine-hint" style="margin:0;">当前选择：${durationText}，上传借出前照片后会按这个时间计算归还截止。</p>
             </div>
             <button class="primary-button" data-sync-borrow="${item.id}" ${item.available <= 0 ? "disabled" : ""}>${icon("bag")} 借用</button>
-            <p class="machine-hint" style="margin-top:12px;">请先在场馆机器完成借出扫码，再同步到手机上传借出前照片。</p>
+            <p class="machine-hint" style="margin-top:12px;">${supportsNfc() ? "点击借用后将弹出 NFC 扫描，请将设备触碰器材上的 NFC 标签完成验证。" : "请先在场馆机器完成借出扫码，再同步到手机上传借出前照片。"}</p>
           </section>
         </main>
       `;
@@ -7583,6 +7778,7 @@
       const durationPeriods = selectedBorrowPeriods();
       const durationMinutes = durationPeriods * CLASS_PERIOD_MINUTES;
       const dueAtMs = borrowedAtMs + durationMinutes * 60 * 1000;
+      const isNfcVerified = !!options.nfcSerial;
       const loan = {
         id: makeUuid(),
         equipmentId,
@@ -7598,9 +7794,15 @@
         beforePhotoDataUrl: "",
         returnPhotoDataUrl: "",
         returnMachineAllowed: false,
+        nfcSerial: options.nfcSerial || "",
+        nfcVerifiedAt: isNfcVerified ? formatDateTime(borrowedAtMs) : "",
       };
       store.loans.unshift(loan);
-      pushMessage("机器扫码已同步", `${item.name} ${item.assetId} 已同步。请上传借出前照片，保存后借用才会生效。`);
+      const msgTitle = isNfcVerified ? "NFC 验证通过" : "机器扫码已同步";
+      const msgBody = isNfcVerified
+        ? `${item.name} ${item.assetId} NFC 标签已验证，请上传借出前照片，保存后借用才会生效。`
+        : `${item.name} ${item.assetId} 已同步。请上传借出前照片，保存后借用才会生效。`;
+      pushMessage(msgTitle, msgBody);
       saveStore();
       createRemoteLoan(loan);
       if (options.skipNavigate) return loan;
@@ -8513,6 +8715,227 @@
       document.querySelector("#app").appendChild(overlay);
     }
 
+    /* ==================== NFC 扫描功能 ==================== */
+    function supportsNfc() {
+      return typeof window !== "undefined" && "NDEFReader" in window;
+    }
+
+    function normalizeNfcSerial(serial) {
+      if (!serial) return "";
+      return String(serial).replace(/[\s:-]/g, "").toUpperCase();
+    }
+
+    function nfcTagMatchesEquipment(serial, item) {
+      if (!serial || !item || !Array.isArray(item.nfcTags) || !item.nfcTags.length) return false;
+      const normalized = normalizeNfcSerial(serial);
+      return item.nfcTags.some((tag) => normalizeNfcSerial(tag) === normalized);
+    }
+
+    async function scanNfcTag(timeoutMs = 45000) {
+      if (!supportsNfc()) {
+        throw new Error("此设备不支持 NFC 功能，请使用支持 NFC 的安卓设备并开启 Chrome 浏览器。");
+      }
+
+      const ndef = new NDEFReader();
+
+      return new Promise((resolve, reject) => {
+        let settled = false;
+
+        const timeout = setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          try { ndef.stop(); } catch (_) { /* ignore */ }
+          reject(new Error("NFC 扫描超时，请将设备靠近 NFC 标签重试。"));
+        }, timeoutMs);
+
+        const onReading = ({ serialNumber, message }) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeout);
+          try { ndef.stop(); } catch (_) { /* ignore */ }
+          resolve({ serialNumber, message });
+        };
+
+        const onError = (event) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeout);
+          try { ndef.stop(); } catch (_) { /* ignore */ }
+          reject(new Error(event.message || "NFC 读取失败，请重试。"));
+        };
+
+        ndef.addEventListener("reading", onReading, { once: true });
+        ndef.addEventListener("readingerror", onError, { once: true });
+
+        ndef.scan().catch((err) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeout);
+          let msg = "无法启动 NFC 扫描";
+          if (err.message) {
+            if (err.message.includes("NotAllowed") || err.message.includes("permission")) {
+              msg = "NFC 权限被拒绝，请在系统设置中开启 NFC 并授权。";
+            } else if (err.message.includes("NotSupported") || err.message.includes("not supported")) {
+              msg = "此设备不支持 NFC 功能。";
+            } else if (err.message.includes("NotReadable") || err.message.includes("not readable")) {
+              msg = "NFC 不可用，请确认已开启手机 NFC 功能。";
+            } else {
+              msg = "NFC 启动失败：" + err.message;
+            }
+          }
+          reject(new Error(msg));
+        });
+      });
+    }
+
+    function showNfcScan(item, onMatch, onCancel) {
+      if (!supportsNfc()) {
+        showNfcNotSupported(item, onCancel);
+        return;
+      }
+
+      const overlay = document.createElement("div");
+      overlay.className = "nfc-scan-overlay";
+      overlay.setAttribute("aria-label", "NFC 扫描");
+      overlay.innerHTML = `
+        <div class="nfc-scan-dialog">
+          <div class="nfc-device-visual">
+            <span class="nfc-wave"></span>
+            <span class="nfc-wave"></span>
+            <span class="nfc-wave"></span>
+            <div class="nfc-device-core">${icon("scan")}</div>
+          </div>
+          <h2>请触碰 NFC 标签</h2>
+          <p class="nfc-hint">
+            将设备靠近器材上的 NFC 标签以验证借用
+            <strong>${escapeAttr(item.name)} · ${escapeAttr(item.assetId)}</strong>
+          </p>
+          <button class="nfc-btn-cancel" style="width:100%;" data-nfc-cancel>取消借用</button>
+        </div>
+      `;
+
+      overlay.querySelector("[data-nfc-cancel]").addEventListener("click", () => {
+        removeNfcOverlay();
+        if (onCancel) onCancel();
+      });
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) { removeNfcOverlay(); if (onCancel) onCancel(); }
+      });
+
+      let active = true;
+      function removeNfcOverlay() {
+        active = false;
+        if (overlay.isConnected) overlay.remove();
+      }
+
+      document.querySelector("#app").appendChild(overlay);
+
+      scanNfcTag(45000)
+        .then(({ serialNumber }) => {
+          if (!active) return;
+          if (nfcTagMatchesEquipment(serialNumber, item)) {
+            showNfcSuccess(overlay, () => {
+              removeNfcOverlay();
+              if (onMatch) onMatch(serialNumber);
+            });
+          } else {
+            showNfcMismatch(overlay, item, () => {
+              removeNfcOverlay();
+              showNfcScan(item, onMatch, onCancel);
+            }, () => {
+              removeNfcOverlay();
+              if (onCancel) onCancel();
+            });
+          }
+        })
+        .catch((err) => {
+          if (!active) return;
+          showNfcError(overlay, err.message, () => {
+            removeNfcOverlay();
+            showNfcScan(item, onMatch, onCancel);
+          }, () => {
+            removeNfcOverlay();
+            if (onCancel) onCancel();
+          });
+        });
+    }
+
+    function showNfcSuccess(overlay, onContinue) {
+      overlay.querySelector(".nfc-scan-dialog").innerHTML = `
+        <div class="nfc-scan-icon nfc-scan-success-icon">${icon("check")}</div>
+        <h2>验证成功</h2>
+        <p class="nfc-hint">NFC 标签已识别，器材验证通过。</p>
+        <button class="nfc-btn-retry" style="width:100%;" data-nfc-continue>继续借用</button>
+      `;
+      overlay.querySelector("[data-nfc-continue]").addEventListener("click", () => {
+        if (onContinue) onContinue();
+      });
+    }
+
+    function showNfcMismatch(overlay, item, onRetry, onCancel) {
+      overlay.querySelector(".nfc-scan-dialog").innerHTML = `
+        <div class="nfc-scan-icon nfc-scan-error-icon">${icon("alert")}</div>
+        <h2>标签不匹配</h2>
+        <p class="nfc-hint">
+          此 NFC 标签与「${escapeAttr(item.name)}」的登记标签不匹配。
+          请确认触碰的是该器材的正确标签。
+        </p>
+        <div class="nfc-actions">
+          <button class="nfc-btn-cancel" data-nfc-cancel>取消</button>
+          <button class="nfc-btn-retry" data-nfc-retry>重新扫描</button>
+        </div>
+      `;
+      overlay.querySelector("[data-nfc-cancel]").addEventListener("click", () => {
+        if (onCancel) onCancel();
+      });
+      overlay.querySelector("[data-nfc-retry]").addEventListener("click", () => {
+        if (onRetry) onRetry();
+      });
+    }
+
+    function showNfcError(overlay, message, onRetry, onCancel) {
+      overlay.querySelector(".nfc-scan-dialog").innerHTML = `
+        <div class="nfc-scan-icon nfc-scan-error-icon">${icon("alert")}</div>
+        <h2>扫描失败</h2>
+        <p class="nfc-hint">${escapeAttr(message)}</p>
+        <div class="nfc-actions">
+          <button class="nfc-btn-cancel" data-nfc-cancel>取消</button>
+          <button class="nfc-btn-retry" data-nfc-retry>重试</button>
+        </div>
+      `;
+      overlay.querySelector("[data-nfc-cancel]").addEventListener("click", () => {
+        if (onCancel) onCancel();
+      });
+      overlay.querySelector("[data-nfc-retry]").addEventListener("click", () => {
+        if (onRetry) onRetry();
+      });
+    }
+
+    function showNfcNotSupported(item, onCancel) {
+      const overlay = document.createElement("div");
+      overlay.className = "nfc-scan-overlay";
+      overlay.setAttribute("aria-label", "NFC 不可用");
+      overlay.innerHTML = `
+        <div class="nfc-scan-dialog">
+          <div class="nfc-scan-icon nfc-scan-error-icon">${icon("alert")}</div>
+          <h2>NFC 不可用</h2>
+          <p class="nfc-hint">
+            您的设备或浏览器不支持 Web NFC。
+            请使用安卓设备 + Chrome 浏览器打开此页面。
+          </p>
+          <button class="nfc-btn-cancel" style="width:100%;" data-nfc-cancel>返回</button>
+        </div>
+      `;
+      overlay.querySelector("[data-nfc-cancel]").addEventListener("click", () => {
+        overlay.remove();
+        if (onCancel) onCancel();
+      });
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) { overlay.remove(); if (onCancel) onCancel(); }
+      });
+      document.querySelector("#app").appendChild(overlay);
+    }
+
     function showNameEditor() {
       const overlay = document.createElement("div");
       overlay.className = "confirm-overlay";
@@ -9233,8 +9656,24 @@
         if (node.disabled) return;
         const itemId = node.dataset.syncBorrow || state.selectedId;
         const item = byId(itemId);
-        showConfirm("确认借用「" + item.name + "」？本次时长为 " + borrowDurationLabel() + "，请确保已在场馆机器完成扫码借出。", () => {
-          route("scanBorrow", { id: itemId, syncContext: "borrow" });
+        if (!item) return;
+        showConfirm("确认借用「" + item.name + "」？本次时长为 " + borrowDurationLabel() + "。", () => {
+          if (supportsNfc()) {
+            showNfcScan(item, (serialNumber) => {
+              const result = syncBorrowFromMachine(itemId, { skipNavigate: true, nfcSerial: serialNumber });
+              if (!result) {
+                render();
+                return;
+              }
+              state.activeLoanId = result.id;
+              state.notice = "NFC 验证通过，借用已同步";
+              route("borrowConfirm", { loanId: result.id });
+            }, () => {
+              /* user cancelled NFC scan */
+            });
+          } else {
+            route("scanBorrow", { id: itemId, syncContext: "borrow" });
+          }
         });
       }));
       document.querySelectorAll("[data-sync-return]").forEach((node) => node.addEventListener("click", () => {
