@@ -6519,6 +6519,8 @@
               </div>
             </section>
 
+            ${currentLoan ? currentLoanCard(currentLoan) : flowCard()}
+
             <section class="home-feedback-card" data-route="report" style="cursor: pointer; margin-bottom: 16px;">
               <div class="feedback-card-content">
                 <div class="feedback-card-text">
@@ -6529,13 +6531,6 @@
               </div>
             </section>
 
-            <div class="section-head"><h2>借用流程</h2></div>
-            ${flow()}
-
-            <div style="margin-top: 14px;">
-              ${currentLoan ? currentLoanCard(currentLoan) : quickStartCard()}
-            </div>
-
             <div class="section-head">
               <h2>器材种类</h2>
             </div>
@@ -6544,6 +6539,27 @@
             </div>
           </main>
           ${tabbar()}
+        </section>
+      `;
+    }
+
+    function flowCard() {
+      const steps = [
+        ["发起借用", "bag"],
+        ["获取验证码", "search"],
+        ["NFC 机器验证", "scan"],
+        ["上传照片", "camera"],
+      ];
+      return `
+        <section class="action-panel" style="margin-bottom:14px;">
+          <h2 style="margin:0 0 12px;">开始借用</h2>
+          <div class="flow" style="border:0;box-shadow:none;background:transparent;padding:0;">
+            ${steps.map(([label, svg], index) => `<div><i>${icon(svg)}</i><b>${index + 1}</b><span>${label}</span></div>`).join("")}
+          </div>
+          <div class="button-row" style="margin-top:14px;">
+            <button class="primary-button" data-route="list">${icon("search")} 查看器材</button>
+            <button class="secondary-button" data-route="batchBorrow">${icon("bag")} 批量申请</button>
+          </div>
         </section>
       `;
     }
@@ -10226,7 +10242,14 @@
         window.clearTimeout(window.__borrowPollTimer);
         window.__borrowPollTimer = window.setTimeout(async () => {
           try { await refreshRemoteStore(); } catch (_) { /* ignore */ }
-          if (state.route === "borrow") render();
+          if (state.route === "borrow") {
+            const justVerified = store.loans.find((loan) => loan.status === "待补借出照片" && !loan.beforePhotoDataUrl);
+            if (justVerified) {
+              route("borrowConfirm", { loanId: justVerified.id });
+            } else {
+              render();
+            }
+          }
         }, 5000);
       }
 
