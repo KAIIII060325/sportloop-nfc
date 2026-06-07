@@ -99,6 +99,14 @@ alter table public.loans
 add column if not exists nfc_serial text not null default '',
 add column if not exists nfc_verified_at timestamptz;
 
+alter table public.loans
+add column if not exists verification_code text not null default '',
+add column if not exists verification_code_expires_at timestamptz;
+
+alter table public.loans
+add column if not exists student_name text not null default '',
+add column if not exists student_id text not null default '';
+
 create table if not exists public.student_messages (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,

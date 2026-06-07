@@ -4244,6 +4244,255 @@
       height: 34px;
     }
 
+    /* ==================== NFC 机器模式（公屏验证机）样式 ==================== */
+    .nfc-machine-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      color: #ffffff;
+      background: #0a0a0c;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .nfc-machine-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px 10px;
+      flex-shrink: 0;
+    }
+
+    .nfc-machine-header h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .nfc-machine-header .nfc-machine-badge {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 14px;
+      border-radius: 999px;
+      color: #ffb3c6;
+      background: rgba(159, 18, 57, 0.25);
+      font-size: 13px;
+      font-weight: 900;
+      border: 1px solid rgba(159, 18, 57, 0.35);
+    }
+
+    .nfc-machine-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 32px 40px;
+      text-align: center;
+    }
+
+    .nfc-machine-step {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .nfc-machine-step h2 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .nfc-machine-step .nfc-machine-desc {
+      margin: 0 0 28px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+    }
+
+    .nfc-machine-code-input {
+      width: 100%;
+      height: 72px;
+      padding: 0 24px;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 36px;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: 12px;
+      outline: none;
+      caret-color: var(--brand);
+    }
+
+    .nfc-machine-code-input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(159, 18, 57, 0.2);
+    }
+
+    .nfc-machine-code-input::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 4px;
+      font-size: 22px;
+    }
+
+    .nfc-machine-btn {
+      width: 100%;
+      min-height: 60px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 18px;
+      color: #ffffff;
+      background: linear-gradient(145deg, #c91946, #8c102e);
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 16px 28px rgba(159, 18, 57, 0.3);
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .nfc-machine-btn:active {
+      transform: scale(0.97);
+    }
+
+    .nfc-machine-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .nfc-machine-btn.is-secondary {
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    .nfc-machine-info-card {
+      width: 100%;
+      padding: 20px 18px;
+      margin-bottom: 24px;
+      border-radius: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nfc-machine-info-card .nfc-machine-equip-name {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .nfc-machine-info-card .nfc-machine-equip-id {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nfc-machine-info-card .nfc-machine-student {
+      margin: 12px 0 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    /* 机器模式 NFC 扫描动画（大尺寸公屏版） */
+    .nfc-machine-scan-visual {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 30px;
+      display: grid;
+      place-items: center;
+    }
+
+    .nfc-machine-scan-visual .nfc-machine-wave {
+      position: absolute;
+      inset: 0;
+      border: 3px solid rgba(159, 18, 57, 0.35);
+      border-radius: 50%;
+      animation: nfcMachineWave 2s ease-out infinite;
+    }
+
+    .nfc-machine-scan-visual .nfc-machine-wave:nth-child(2) {
+      animation-delay: 0.65s;
+    }
+
+    .nfc-machine-scan-visual .nfc-machine-wave:nth-child(3) {
+      animation-delay: 1.3s;
+    }
+
+    @keyframes nfcMachineWave {
+      0% { transform: scale(0.25); opacity: 0.9; }
+      100% { transform: scale(1.1); opacity: 0; }
+    }
+
+    .nfc-machine-scan-core {
+      width: 100px;
+      height: 100px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--brand);
+      box-shadow: 0 18px 40px rgba(159, 18, 57, 0.5);
+      z-index: 2;
+      animation: nfcMachineCorePulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes nfcMachineCorePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .nfc-machine-scan-core svg {
+      width: 52px;
+      height: 52px;
+    }
+
+    .nfc-machine-result-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+    }
+
+    .nfc-machine-result-icon.is-success {
+      color: var(--ok);
+      background: rgba(22, 116, 68, 0.15);
+      border: 3px solid rgba(22, 116, 68, 0.3);
+    }
+
+    .nfc-machine-result-icon.is-error {
+      color: var(--bad);
+      background: rgba(161, 15, 43, 0.15);
+      border: 3px solid rgba(161, 15, 43, 0.3);
+    }
+
+    .nfc-machine-result-icon svg {
+      width: 50px;
+      height: 50px;
+    }
+
+    .nfc-machine-back-link {
+      margin-top: 24px;
+      color: rgba(255, 255, 255, 0.4);
+      background: transparent;
+      border: 0;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
     @media (min-width: 1024px) {
       .stage {
         min-height: 100vh;
@@ -5241,6 +5490,12 @@
         renewedTimes: row.renewed_times || 0,
         renewalRecords: row.renewal_records || [],
         batchRequestId: row.batch_request_id || "",
+        nfcSerial: row.nfc_serial || "",
+        nfcVerifiedAt: row.nfc_verified_at || "",
+        verificationCode: row.verification_code || "",
+        verificationCodeExpiresAt: row.verification_code_expires_at || "",
+        studentName: row.student_name || "",
+        studentId: row.student_id || "",
       };
     }
 
@@ -5528,7 +5783,7 @@
     const adminRoutes = new Set(["admin", ...Object.values(adminModuleRoutes)]);
     const studentRoutes = new Set([
       "home", "list", "detail", "scanBorrow", "borrowConfirm", "borrow", "batchBorrow", "renew", "renewDetail",
-      "detect", "result", "report", "messages", "contactAdmin", "profile", "profileInfo", "creditRules", "identity",
+      "detect", "result", "report", "messages", "contactAdmin", "nfcMachine", "profile", "profileInfo", "creditRules", "identity",
     ]);
 
     function currentUserRole() {
@@ -5626,6 +5881,10 @@
           batch_request_id: loan.batchRequestId || null,
           nfc_serial: loan.nfcSerial || "",
           nfc_verified_at: loan.nfcVerifiedAt || null,
+          verification_code: loan.verificationCode || "",
+          verification_code_expires_at: loan.verificationCodeExpiresAt || null,
+          student_name: loan.studentName || "",
+          student_id: loan.studentId || "",
         },
       });
     }
@@ -5653,6 +5912,10 @@
           batch_request_id: loan.batchRequestId || null,
           nfc_serial: loan.nfcSerial || "",
           nfc_verified_at: loan.nfcVerifiedAt || null,
+          verification_code: loan.verificationCode || "",
+          verification_code_expires_at: loan.verificationCodeExpiresAt || null,
+          student_name: loan.studentName || "",
+          student_id: loan.studentId || "",
         },
       });
     }
@@ -5946,11 +6209,12 @@
     }
 
     function loanDisplayStatus(loan) {
+      if (loan.status === "等待NFC验证") return "等待NFC验证";
       return loanNeedsBeforePhoto(loan) ? "待补借出照片" : loan.status;
     }
 
     function activeBorrowLoans() {
-      return store.loans.filter((loan) => ["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+      return store.loans.filter((loan) => ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
     }
 
     function confirmedBorrowLoans() {
@@ -6073,7 +6337,7 @@
 
     function statusClass(status) {
       if (status === "可借" || status === "已归还" || status === "已完成" || status === "已回复" || status === "已通过" || status === "已同步") return "ok";
-      if (status === "补充中" || status === "待补借出照片" || status === "待补照片" || status === "使用中" || status === "待归还" || status === "待回复" || status === "待审核" || status === "已借出") return "warn";
+      if (status === "补充中" || status === "等待NFC验证" || status === "待补借出照片" || status === "待补照片" || status === "使用中" || status === "待归还" || status === "待回复" || status === "待审核" || status === "已借出") return "warn";
       return "bad";
     }
 
@@ -6343,21 +6607,13 @@
     }
 
     function flow() {
-      const steps = supportsNfc()
-        ? [
-            ["手机看状态", "search"],
-            ["NFC 触碰验证", "scan"],
-            ["同步记录", "bag"],
-            ["拍照检测", "camera"],
-            ["管理员维保", "wrench"],
-          ]
-        : [
-            ["手机看状态", "search"],
-            ["机器扫条码", "scan"],
-            ["同步记录", "bag"],
-            ["拍照检测", "camera"],
-            ["管理员维保", "wrench"],
-          ];
+      const steps = [
+        ["手机发起借用", "search"],
+        ["获取验证码", "bag"],
+        ["NFC 机器验证", "scan"],
+        ["拍照检测", "camera"],
+        ["管理员维保", "wrench"],
+      ];
       return `<div class="flow">${steps.map(([label, svg], index) => `<div><i>${icon(svg)}</i><b>${index + 1}</b><span>${label}</span></div>`).join("")}</div>`;
     }
 
@@ -6424,7 +6680,7 @@
             </div>
             <div class="info-list">
               <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
-              <div><span>借用方式</span><strong>${supportsNfc() ? "触碰器材 NFC 标签验证，上传借出前照片后生效" : "机器先扫码，手机上传借出前照片后生效"}</strong></div>
+              <div><span>借用方式</span><strong>手机发起借用 → 获取验证码 → 场馆 NFC 机器验证 → 上传借出前照片生效</strong></div>
               <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
             </div>
             <div class="duration-picker">
@@ -6433,10 +6689,10 @@
                 <span>1 节课 = ${CLASS_PERIOD_MINUTES} 分钟</span>
               </div>
               <div class="duration-options">${borrowDurationOptions()}</div>
-              <p class="machine-hint" style="margin:0;">当前选择：${durationText}，上传借出前照片后会按这个时间计算归还截止。</p>
+              <p class="machine-hint" style="margin:0;">当前选择：${durationText}，NFC 验证通过并上传借出前照片后按这个时间计算归还截止。</p>
             </div>
             <button class="primary-button" data-sync-borrow="${item.id}" ${item.available <= 0 ? "disabled" : ""}>${icon("bag")} 借用</button>
-            <p class="machine-hint" style="margin-top:12px;">${supportsNfc() ? "点击借用后将弹出 NFC 扫描，请将设备触碰器材上的 NFC 标签完成验证。" : "请先在场馆机器完成借出扫码，再同步到手机上传借出前照片。"}</p>
+            <p class="machine-hint" style="margin-top:12px;">点击借用后将生成 6 位验证码，请前往场馆 NFC 识别机器输入验证码并贴 NFC 标签完成验证。</p>
           </section>
         </main>
       `;
@@ -6494,52 +6750,96 @@
       const item = byId(loan.equipmentId);
       if (!item) return shell("借用确认", `<main class="scroll"><div class="empty">未找到对应器材。</div></main>`, { tabs: false });
       const needsBeforePhoto = loanNeedsBeforePhoto(loan);
-      const body = `
-        <main class="scroll">
-          <section class="result-card">
-            <div class="borrow-confirm-hero">
-              <div class="borrow-confirm-badge">${icon(needsBeforePhoto ? "camera" : "check")}</div>
-              <h1 style="margin:0;font-size:28px;">${needsBeforePhoto ? "上传借出前照片" : "借用成功"}</h1>
-              <p class="body-text" style="text-align:center;margin-top:10px;">${needsBeforePhoto ? "机器扫码已同步。请上传借出前照片，保存后这次借用才正式生效。" : "借出前照片已保存，借用记录已经生效。"}</p>
-            </div>
-            ${equipmentImage(item, "detail-img")}<!-- [IMAGE-FN→detail-img] 借用确认页 -->
-            <div class="detail-title" style="margin-top:14px;">
-              <div>
-                <h1 style="font-size:24px;">${item.name}</h1>
-                <p>${item.assetId}</p>
+      const isAwaitingNfc = loan.status === "等待NFC验证";
+      let body;
+      if (isAwaitingNfc) {
+        const expiresIn = loan.verificationCodeExpiresAt
+          ? Math.max(0, Math.round((new Date(loan.verificationCodeExpiresAt).getTime() - Date.now()) / 60000))
+          : 5;
+        body = `
+          <main class="scroll">
+            <section class="result-card">
+              <div class="borrow-confirm-hero">
+                <div class="borrow-confirm-badge">${icon("scan")}</div>
+                <h1 style="margin:0;font-size:28px;">前往 NFC 机器验证</h1>
+                <p class="body-text" style="text-align:center;margin-top:10px;">请记下验证码，前往场馆的 NFC 识别机器完成验证。</p>
               </div>
-              ${tag(loanDisplayStatus(loan))}
-            </div>
-            <div class="info-list" style="margin-top:14px;">
-              <div><span>借出时间</span><strong>${loan.borrowedAt}</strong></div>
-              <div><span>借用时长</span><strong>${loan.durationLabel || "未设置"}</strong></div>
-              <div><span>归还截止</span><strong>${loan.dueAt || "未设置"}</strong></div>
-              <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
-              <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
-            </div>
-            ${needsBeforePhoto ? `
-              <label class="upload-real" style="margin-top:18px;">
-                ${icon("camera")} 上传借出前照片
-                <input id="borrowBeforePhotoInput" type="file" accept="image/*" capture="environment" />
-              </label>
-              <div id="borrowBeforePhotoName" class="photo-name">未选择借出前照片</div>
-              <button class="primary-button" style="margin-top:16px;width:100%;" data-save-borrow-before="${loan.id}">${icon("check")} 保存并完成借用</button>
-            ` : `
-              <div class="button-row" style="margin-top:18px;">
-                <button class="secondary-button" data-detail="${item.id}">查看器材</button>
-                <button class="primary-button" data-route="borrow">我的借用</button>
+              <div style="text-align:center;padding:24px 0;">
+                <div style="font-size:56px;font-weight:900;letter-spacing:12px;color:var(--brand);font-family:'DIN Alternate','SF Pro Display',monospace;">${loan.verificationCode || "------"}</div>
+                <p style="margin:8px 0 0;color:var(--muted);font-size:13px;">6 位验证码 · ${expiresIn} 分钟内有效</p>
               </div>
-              <button class="primary-button" style="margin-top:10px;width:100%;" data-route="home">返回首页</button>
-            `}
-          </section>
-        </main>
-      `;
+              ${equipmentImage(item, "detail-img")}<!-- [IMAGE-FN→detail-img] 借用确认页 -->
+              <div class="detail-title" style="margin-top:14px;">
+                <div>
+                  <h1 style="font-size:24px;">${item.name}</h1>
+                  <p>${item.assetId}</p>
+                </div>
+                ${tag(loanDisplayStatus(loan))}
+              </div>
+              <div class="info-list" style="margin-top:14px;">
+                <div><span>借出时间</span><strong>${loan.borrowedAt}</strong></div>
+                <div><span>借用时长</span><strong>${loan.durationLabel || "未设置"}</strong></div>
+                <div><span>归还截止</span><strong>${loan.dueAt || "未设置"}</strong></div>
+              </div>
+              <p class="machine-hint" style="margin-top:16px;">
+                到达 NFC 机器后：<br>
+                1. 打开机器上的 SportLoop NFC 验证页面<br>
+                2. 输入上方 6 位验证码<br>
+                3. 将器材 NFC 标签贴到机器背面<br>
+                4. 验证通过后回到此页面，上传借出前照片完成借用
+              </p>
+              <button class="primary-button" style="margin-top:12px;width:100%;" data-route="borrow">${icon("bag")} 查看我的借用</button>
+            </section>
+          </main>
+        `;
+      } else {
+        body = `
+          <main class="scroll">
+            <section class="result-card">
+              <div class="borrow-confirm-hero">
+                <div class="borrow-confirm-badge">${icon(needsBeforePhoto ? "camera" : "check")}</div>
+                <h1 style="margin:0;font-size:28px;">${needsBeforePhoto ? "上传借出前照片" : "借用成功"}</h1>
+                <p class="body-text" style="text-align:center;margin-top:10px;">${needsBeforePhoto ? "NFC 验证已完成。请上传借出前照片，保存后这次借用才正式生效。" : "借出前照片已保存，借用记录已经生效。"}</p>
+              </div>
+              ${equipmentImage(item, "detail-img")}<!-- [IMAGE-FN→detail-img] 借用确认页 -->
+              <div class="detail-title" style="margin-top:14px;">
+                <div>
+                  <h1 style="font-size:24px;">${item.name}</h1>
+                  <p>${item.assetId}</p>
+                </div>
+                ${tag(loanDisplayStatus(loan))}
+              </div>
+              <div class="info-list" style="margin-top:14px;">
+                <div><span>借出时间</span><strong>${loan.borrowedAt}</strong></div>
+                <div><span>借用时长</span><strong>${loan.durationLabel || "未设置"}</strong></div>
+                <div><span>归还截止</span><strong>${loan.dueAt || "未设置"}</strong></div>
+                <div><span>可借场馆</span><strong>${cleanVenue(item.venue)}</strong></div>
+                <div><span>归还要求</span><strong>归还照片检测正常后，机器才可扫码归还</strong></div>
+              </div>
+              ${needsBeforePhoto ? `
+                <label class="upload-real" style="margin-top:18px;">
+                  ${icon("camera")} 上传借出前照片
+                  <input id="borrowBeforePhotoInput" type="file" accept="image/*" capture="environment" />
+                </label>
+                <div id="borrowBeforePhotoName" class="photo-name">未选择借出前照片</div>
+                <button class="primary-button" style="margin-top:16px;width:100%;" data-save-borrow-before="${loan.id}">${icon("check")} 保存并完成借用</button>
+              ` : `
+                <div class="button-row" style="margin-top:18px;">
+                  <button class="secondary-button" data-detail="${item.id}">查看器材</button>
+                  <button class="primary-button" data-route="borrow">我的借用</button>
+                </div>
+                <button class="primary-button" style="margin-top:10px;width:100%;" data-route="home">返回首页</button>
+              `}
+            </section>
+          </main>
+        `;
+      }
       return shell("借用确认", body, { tabs: false });
     }
 
     function borrowPage() {
       const active = activeBorrowLoans();
-      const history = store.loans.filter((loan) => !["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+      const history = store.loans.filter((loan) => !["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       const body = `
         <main class="scroll">
           <section class="action-panel" style="margin-bottom:14px;">
@@ -6550,7 +6850,7 @@
             <button class="primary-button" data-route="batchBorrow">${icon("bag")} 去申请</button>
           </section>
           <div class="section-head"><h2>当前借用</h2></div>
-          ${active.length ? active.map(loanCard).join("") : `<div class="empty">还没有借用记录。请先在场馆机器完成借出，再在器材详情页点击借用。</div>`}
+          ${active.length ? active.map(loanCard).join("") : `<div class="empty">还没有借用记录。请先在器材详情页发起借用，获取验证码后前往场馆 NFC 机器完成验证。</div>`}
           <div class="section-head"><h2>历史记录</h2></div>
           <div class="timeline">${history.length ? history.map(historyRow).join("") : `<div class="empty">暂无历史记录。</div>`}</div>
         </main>
@@ -7738,6 +8038,7 @@
             <button class="profile-setting-row" data-route="identity">${icon("idcard")}<strong>校园认证</strong><span>学号与身份管理</span>${icon("chevron")}</button>
             <button class="profile-setting-row" data-route="creditRules">${icon("shield")}<strong>信用规则</strong><span>了解信用评分规则</span>${icon("chevron")}</button>
             <button class="profile-setting-row" data-route="report">${icon("help")}<strong>帮助与反馈</strong><span>常见问题与反馈</span>${icon("chevron")}</button>
+            <button class="profile-setting-row" data-route="nfcMachine">${icon("scan")}<strong>NFC 机器模式</strong><span>场馆验证机专用页面</span>${icon("chevron")}</button>
             <button class="profile-setting-row" data-route="contactAdmin">${icon("headset")}<strong>联系管理员</strong><span>意见建议与咨询</span>${icon("chevron")}</button>
             <button class="profile-setting-row logout-row" data-logout>${icon("logout")}<strong>退出登录</strong><span>回到登录页面</span>${icon("chevron")}</button>
           </section>
@@ -7763,14 +8064,14 @@
         if (!options.skipNavigate) render();
         return null;
       }
-      const existing = store.loans.find((loan) => loan.equipmentId === equipmentId && ["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+      const existing = store.loans.find((loan) => loan.equipmentId === equipmentId && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       if (existing) {
-        state.notice = "该器材已有进行中的借用，无需重复同步";
+        state.notice = existing.status === "等待NFC验证" ? "该器材已有待验证的借用，请前往场馆 NFC 机器完成验证" : "该器材已有进行中的借用，无需重复借用";
         if (!options.skipNavigate) render();
         return existing;
       }
       if (item.available <= 0 || item.status === "维修中") {
-        state.notice = "场馆暂无可用库存，请确认机器借出是否成功";
+        state.notice = "场馆暂无可用库存";
         if (!options.skipNavigate) render();
         return null;
       }
@@ -7778,7 +8079,8 @@
       const durationPeriods = selectedBorrowPeriods();
       const durationMinutes = durationPeriods * CLASS_PERIOD_MINUTES;
       const dueAtMs = borrowedAtMs + durationMinutes * 60 * 1000;
-      const isNfcVerified = !!options.nfcSerial;
+      const verificationCode = generateVerificationCode();
+      const profile = profileData();
       const loan = {
         id: makeUuid(),
         equipmentId,
@@ -7789,24 +8091,23 @@
         durationPeriods,
         durationMinutes,
         durationLabel: borrowDurationLabel(durationPeriods),
-        status: "待补借出照片",
+        status: "等待NFC验证",
         detectResult: "",
         beforePhotoDataUrl: "",
         returnPhotoDataUrl: "",
         returnMachineAllowed: false,
-        nfcSerial: options.nfcSerial || "",
-        nfcVerifiedAt: isNfcVerified ? formatDateTime(borrowedAtMs) : "",
+        nfcSerial: "",
+        nfcVerifiedAt: "",
+        verificationCode,
+        verificationCodeExpiresAt: verificationCodeExpiresAt(),
+        studentName: profile.realName || profileNickname(),
+        studentId: profile.studentId || "",
       };
       store.loans.unshift(loan);
-      const msgTitle = isNfcVerified ? "NFC 验证通过" : "机器扫码已同步";
-      const msgBody = isNfcVerified
-        ? `${item.name} ${item.assetId} NFC 标签已验证，请上传借出前照片，保存后借用才会生效。`
-        : `${item.name} ${item.assetId} 已同步。请上传借出前照片，保存后借用才会生效。`;
-      pushMessage(msgTitle, msgBody);
+      pushMessage("借用申请已提交", `${item.name} ${item.assetId} 验证码：${verificationCode}，请前往场馆 NFC 机器完成验证。`);
       saveStore();
       createRemoteLoan(loan);
       if (options.skipNavigate) return loan;
-      state.notice = "请上传借出前照片";
       route("borrowConfirm", { loanId: loan.id });
       return loan;
     }
@@ -8126,7 +8427,7 @@
     function validateBatchBorrowRequest(request) {
       if (!request) return "未找到这次批量申请";
       if (request.status !== "已通过") return "管理员通过后才能机器批量借出";
-      const hasBorrowed = store.loans.some((loan) => loan.batchRequestId === request.id && ["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
+      const hasBorrowed = store.loans.some((loan) => loan.batchRequestId === request.id && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status));
       if (hasBorrowed) return "这次申请已经同步过借出";
       for (const row of request.items || []) {
         const item = byId(row.equipmentId);
@@ -8604,6 +8905,7 @@
         report: reportPage,
         messages: messagesPage,
         contactAdmin: contactAdminPage,
+        nfcMachine: nfcMachinePage,
         admin: adminPage,
         adminBatch: () => adminModulePage("batch"),
         adminMessages: () => adminModulePage("messages"),
@@ -8936,6 +9238,306 @@
       document.querySelector("#app").appendChild(overlay);
     }
 
+    /* ==================== NFC 机器模式 — 验证码流程 ==================== */
+    function generateVerificationCode() {
+      return String(Math.floor(100000 + Math.random() * 900000));
+    }
+
+    function verificationCodeExpiresAt() {
+      return new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    }
+
+    function isVerificationCodeExpired(loan) {
+      if (!loan || !loan.verificationCodeExpiresAt) return true;
+      return Date.now() > new Date(loan.verificationCodeExpiresAt).getTime();
+    }
+
+    async function findLoanByVerificationCode(code) {
+      const rows = await supabaseRequest(
+        `loans?select=*&verification_code=eq.${encodeURIComponent(code)}&order=created_at.desc&limit=1`
+      );
+      return Array.isArray(rows) && rows.length ? dbLoanToLocal(rows[0]) : null;
+    }
+
+    async function completeNfcMachineVerification(loanId, equipmentId, serialNumber) {
+      const now = new Date().toISOString();
+      return supabaseRequest(`loans?id=eq.${loanId}`, {
+        method: "PATCH",
+        body: {
+          status: "待补借出照片",
+          nfc_serial: serialNumber || "",
+          nfc_verified_at: now,
+        },
+      });
+    }
+
+    /* ==================== NFC 机器模式页面 ==================== */
+    let nfcMachineState = {
+      step: "code",
+      code: "",
+      loanId: "",
+      equipmentId: "",
+      equipmentName: "",
+      equipmentAssetId: "",
+      studentName: "",
+      message: "",
+      error: false,
+    };
+
+    function resetNfcMachineState() {
+      nfcMachineState = {
+        step: "code",
+        code: "",
+        loanId: "",
+        equipmentId: "",
+        equipmentName: "",
+        equipmentAssetId: "",
+        studentName: "",
+        message: "",
+        error: false,
+      };
+    }
+
+    function nfcMachinePage() {
+      return `
+        <section class="nfc-machine-screen">
+          <header class="nfc-machine-header">
+            <h1>SportLoop</h1>
+            <span class="nfc-machine-badge">NFC 验证机</span>
+          </header>
+          <div class="nfc-machine-body">
+            ${nfcMachineStepCode()}
+          </div>
+          <div style="text-align:center;padding-bottom:28px;">
+            <button class="nfc-machine-back-link" data-route="home">退出机器模式</button>
+          </div>
+        </section>
+      `;
+    }
+
+    function nfcMachineStepCode() {
+      const msg = nfcMachineState.message
+        ? `<p style="color:${nfcMachineState.error ? '#f87171' : 'rgba(255,255,255,0.55)'};font-size:14px;margin:0 0 20px;">${escapeHtml(nfcMachineState.message)}</p>`
+        : "";
+      return `
+        <div class="nfc-machine-step">
+          <h2>输入验证码</h2>
+          <p class="nfc-machine-desc">学生在手机上发起借用后会得到一个 6 位验证码，请在此输入。</p>
+          ${msg}
+          <input class="nfc-machine-code-input" id="nfcMachineCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="000000" autofocus />
+          <button class="nfc-machine-btn" id="nfcMachineCodeBtn">验证并继续</button>
+        </div>
+      `;
+    }
+
+    function nfcMachineStepScan(loan, item) {
+      return `
+        <div class="nfc-machine-step">
+          <div class="nfc-machine-info-card">
+            <p class="nfc-machine-equip-name">${escapeHtml(item.name)}</p>
+            <p class="nfc-machine-equip-id">${escapeHtml(item.assetId)}</p>
+            <p class="nfc-machine-student">${escapeHtml(loan.studentName || "学生")} · ${escapeHtml(loan.studentId || "")}</p>
+          </div>
+          <div class="nfc-machine-scan-visual" id="nfcMachineScanVisual">
+            <span class="nfc-machine-wave"></span>
+            <span class="nfc-machine-wave"></span>
+            <span class="nfc-machine-wave"></span>
+            <div class="nfc-machine-scan-core">${icon("scan")}</div>
+          </div>
+          <h2>请贴 NFC 标签</h2>
+          <p class="nfc-machine-desc">将器材上的 NFC 标签贴到设备背面进行验证</p>
+          <button class="nfc-machine-btn is-secondary" id="nfcMachineCancelScan">取消，重新输入验证码</button>
+        </div>
+      `;
+    }
+
+    function nfcMachineStepResult(success, title, desc) {
+      const iconClass = success ? "is-success" : "is-error";
+      const iconName = success ? "check" : "alert";
+      return `
+        <div class="nfc-machine-step">
+          <div class="nfc-machine-result-icon ${iconClass}">${icon(iconName)}</div>
+          <h2>${escapeHtml(title)}</h2>
+          <p class="nfc-machine-desc">${escapeHtml(desc)}</p>
+          ${success
+            ? `<button class="nfc-machine-btn" id="nfcMachineNewCode">验证下一个</button>`
+            : `<button class="nfc-machine-btn" id="nfcMachineRetry">重新验证</button>`
+          }
+        </div>
+      `;
+    }
+
+    async function handleNfcMachineCodeSubmit() {
+      const input = document.querySelector("#nfcMachineCodeInput");
+      const code = String(input?.value || "").trim();
+      if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+        nfcMachineState.message = "请输入 6 位数字验证码";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      nfcMachineState.code = code;
+      nfcMachineState.message = "正在查找验证码...";
+      nfcMachineState.error = false;
+      renderNfcMachineStep();
+
+      let loan;
+      try {
+        loan = await findLoanByVerificationCode(code);
+      } catch (err) {
+        nfcMachineState.message = "网络错误，请重试";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      if (!loan) {
+        nfcMachineState.message = "验证码无效或已过期，请确认后重试";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      if (loan.status !== "等待NFC验证") {
+        nfcMachineState.message = "该借用记录已处理过，无需重复验证";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      if (isVerificationCodeExpired(loan)) {
+        nfcMachineState.message = "验证码已过期（超过 5 分钟），请重新发起借用";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      const item = byId(loan.equipmentId) || store.equipment.find((eq) => eq.id === loan.equipmentId);
+      if (!item) {
+        nfcMachineState.message = "未找到对应器材，请联系管理员";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      nfcMachineState.loanId = loan.id;
+      nfcMachineState.equipmentId = item.id;
+      nfcMachineState.equipmentName = item.name;
+      nfcMachineState.equipmentAssetId = item.assetId;
+      nfcMachineState.studentName = loan.studentName || "";
+      nfcMachineState.step = "scan";
+      nfcMachineState.message = "";
+      renderNfcMachine();
+
+      startNfcMachineScan(loan, item);
+    }
+
+    async function startNfcMachineScan(loan, item) {
+      if (!supportsNfc()) {
+        nfcMachineState.message = "此设备不支持 NFC";
+        nfcMachineState.error = true;
+        renderNfcMachineStep();
+        return;
+      }
+
+      try {
+        const { serialNumber } = await scanNfcTag(60000);
+        if (!nfcTagMatchesEquipment(serialNumber, item)) {
+          nfcMachineState.step = "result";
+          nfcMachineState.resultSuccess = false;
+          nfcMachineState.resultTitle = "标签不匹配";
+          nfcMachineState.resultDesc = `此标签不属于「${item.name}」，请确认使用的是正确器材的标签。`;
+          renderNfcMachine();
+          return;
+        }
+
+        await completeNfcMachineVerification(loan.id, item.id, serialNumber);
+
+        const localLoan = loanById(loan.id);
+        if (localLoan) {
+          localLoan.status = "待补借出照片";
+          localLoan.nfcSerial = serialNumber;
+          localLoan.nfcVerifiedAt = new Date().toISOString();
+          saveStore();
+        }
+
+        nfcMachineState.step = "result";
+        nfcMachineState.resultSuccess = true;
+        nfcMachineState.resultTitle = "验证成功";
+        nfcMachineState.resultDesc = `${item.name} NFC 验证通过，学生可在手机上上传借出前照片完成借用。`;
+      } catch (err) {
+        nfcMachineState.step = "result";
+        nfcMachineState.resultSuccess = false;
+        nfcMachineState.resultTitle = "扫描失败";
+        nfcMachineState.resultDesc = err.message || "NFC 读取失败，请重试。";
+      }
+      renderNfcMachine();
+    }
+
+    function renderNfcMachine() {
+      const app = document.querySelector("#app");
+      if (!app) return;
+      app.innerHTML = nfcMachinePage();
+      bindNfcMachine();
+    }
+
+    function renderNfcMachineStep() {
+      const app = document.querySelector("#app");
+      if (!app) return;
+      app.innerHTML = nfcMachinePage();
+      bindNfcMachine();
+    }
+
+    function bindNfcMachine() {
+      const codeBtn = document.querySelector("#nfcMachineCodeBtn");
+      if (codeBtn) {
+        codeBtn.addEventListener("click", handleNfcMachineCodeSubmit);
+      }
+
+      const codeInput = document.querySelector("#nfcMachineCodeInput");
+      if (codeInput) {
+        codeInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") handleNfcMachineCodeSubmit();
+        });
+        setTimeout(() => codeInput.focus(), 150);
+      }
+
+      const cancelBtn = document.querySelector("#nfcMachineCancelScan");
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", () => {
+          resetNfcMachineState();
+          renderNfcMachine();
+        });
+      }
+
+      const newCodeBtn = document.querySelector("#nfcMachineNewCode");
+      if (newCodeBtn) {
+        newCodeBtn.addEventListener("click", () => {
+          resetNfcMachineState();
+          renderNfcMachine();
+        });
+      }
+
+      const retryBtn = document.querySelector("#nfcMachineRetry");
+      if (retryBtn) {
+        retryBtn.addEventListener("click", () => {
+          nfcMachineState.step = "code";
+          nfcMachineState.code = "";
+          nfcMachineState.message = "";
+          nfcMachineState.error = false;
+          renderNfcMachine();
+        });
+      }
+
+      document.querySelectorAll("[data-route]").forEach((node) => {
+        node.addEventListener("click", () => {
+          resetNfcMachineState();
+          route(node.dataset.route);
+        });
+      });
+    }
+
     function showNameEditor() {
       const overlay = document.createElement("div");
       overlay.className = "confirm-overlay";
@@ -9191,7 +9793,7 @@
 
     function activeLoanCountForEquipment(equipmentId) {
       return store.loans.filter((loan) =>
-        loan.equipmentId === equipmentId && ["待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status)
+        loan.equipmentId === equipmentId && ["等待NFC验证", "待补借出照片", "使用中", "待归还", "异常待归还"].includes(loan.status)
       ).length;
     }
 
@@ -9523,6 +10125,10 @@
     }
 
     function bind() {
+      if (state.route === "nfcMachine") {
+        bindNfcMachine();
+        return;
+      }
       document.querySelectorAll("[data-route]").forEach((node) => node.addEventListener("click", () => route(node.dataset.route)));
       document.querySelectorAll("[data-back]").forEach((node) => node.addEventListener("click", back));
       document.querySelectorAll("[data-logout]").forEach((node) => node.addEventListener("click", handleLogout));
@@ -9657,23 +10263,14 @@
         const itemId = node.dataset.syncBorrow || state.selectedId;
         const item = byId(itemId);
         if (!item) return;
-        showConfirm("确认借用「" + item.name + "」？本次时长为 " + borrowDurationLabel() + "。", () => {
-          if (supportsNfc()) {
-            showNfcScan(item, (serialNumber) => {
-              const result = syncBorrowFromMachine(itemId, { skipNavigate: true, nfcSerial: serialNumber });
-              if (!result) {
-                render();
-                return;
-              }
-              state.activeLoanId = result.id;
-              state.notice = "NFC 验证通过，借用已同步";
-              route("borrowConfirm", { loanId: result.id });
-            }, () => {
-              /* user cancelled NFC scan */
-            });
-          } else {
-            route("scanBorrow", { id: itemId, syncContext: "borrow" });
+        showConfirm("确认借用「" + item.name + "」？本次时长为 " + borrowDurationLabel() + "。\n\n确认后将生成验证码，请前往场馆 NFC 机器完成验证。", () => {
+          const result = syncBorrowFromMachine(itemId, { skipNavigate: true });
+          if (!result) {
+            render();
+            return;
           }
+          state.activeLoanId = result.id;
+          route("borrowConfirm", { loanId: result.id });
         });
       }));
       document.querySelectorAll("[data-sync-return]").forEach((node) => node.addEventListener("click", () => {
