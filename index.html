@@ -6451,55 +6451,55 @@
       const popularEquipment = store.equipment.slice(0, 5);
 
       return `
-        <section class=”screen home-screen”>
-          <header class=”home-top”>
-            <button class=”icon-button” data-route=”messages” aria-label=”消息通知”>${icon(“bell”)}</button>
-            <div class=”brand”><img class=”logo-mark app-icon” src=”${escapeAttr(assetUrl(APP_ICON_SRC))}” alt=”SportLoop” decoding=”async” /><span>SportLoop</span></div>
-            <button class=”icon-button” data-route=”list” aria-label=”器材列表”>${icon(“search”)}</button>
+        <section class="screen home-screen">
+          <header class="home-top">
+            <button class="icon-button" data-route="messages" aria-label="消息通知">${icon(“bell")}</button>
+            <div class="brand"><img class="logo-mark app-icon" src="${escapeAttr(assetUrl(APP_ICON_SRC))}" alt="SportLoop" decoding="async" /><span>SportLoop</span></div>
+            <button class="icon-button" data-route="list" aria-label="器材列表">${icon(“search")}</button>
           </header>
           ${notice()}
-          <main class=”scroll”>
-            <section class=”new-hero-container”>
-              <div class=”new-hero-left”>
-                <h1 class=”new-hero-title”>Sports</h1>
-                <h1 class=”new-hero-title”>器材借用</h1>
-                <p class=”new-hero-subtitle”>先看状态，再去借用</p>
-                <div class=”new-stats-stack”>
-                  <div class=”new-stat-card”>
-                    <div class=”new-stat-icon-wrapper red-theme”>
-                      ${icon(“bag”)}
+          <main class="scroll">
+            <section class="new-hero-container">
+              <div class="new-hero-left">
+                <h1 class="new-hero-title">Sports</h1>
+                <h1 class="new-hero-title">器材借用</h1>
+                <p class="new-hero-subtitle">先看状态，再去借用</p>
+                <div class="new-stats-stack">
+                  <div class="new-stat-card">
+                    <div class="new-stat-icon-wrapper red-theme">
+                      ${icon(“bag")}
                     </div>
-                    <div class=”new-stat-text”>
-                      <span class=”new-stat-label”>可借器材</span>
-                      <span class=”new-stat-val”>${totalAvailable} <small>件</small></span>
+                    <div class="new-stat-text">
+                      <span class="new-stat-label">可借器材</span>
+                      <span class="new-stat-val">${totalAvailable} <small>件</small></span>
                     </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section class=”home-feedback-card” data-route=”report” style=”cursor: pointer; margin-bottom: 16px;”>
-              <div class=”feedback-card-content”>
-                <div class=”feedback-card-text”>
+            <section class="home-feedback-card" data-route="report" style="cursor: pointer; margin-bottom: 16px;">
+              <div class="feedback-card-content">
+                <div class="feedback-card-text">
                   <h3>💬 反馈器材问题</h3>
                   <p>球拍磨损、没气？点击快速反馈报损</p>
                 </div>
-                <div class=”feedback-arrow”>${icon(“chevron”)}</div>
+                <div class="feedback-arrow">${icon(“chevron")}</div>
               </div>
             </section>
 
-            <div class=”section-head”><h2>借用流程</h2></div>
+            <div class="section-head"><h2>借用流程</h2></div>
             ${flow()}
 
-            <div style=”margin-top: 14px;”>
+            <div style="margin-top: 14px;">
               ${currentLoan ? currentLoanCard(currentLoan) : quickStartCard()}
             </div>
 
-            <div class=”section-head”>
+            <div class="section-head">
               <h2>器材种类</h2>
             </div>
-            <div class=”equipment-grid”>
-              ${popularEquipment.length ? popularEquipment.map(equipmentCard).join(“”) : `<div class=”empty”>暂无器材，管理员录入后会显示在这里。</div>`}
+            <div class="equipment-grid">
+              ${popularEquipment.length ? popularEquipment.map(equipmentCard).join(“") : `<div class="empty">暂无器材，管理员录入后会显示在这里。</div>`}
             </div>
           </main>
           ${tabbar()}

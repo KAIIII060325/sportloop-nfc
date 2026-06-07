@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node *)",
       "Bash(copy *)",
-      "Bash(cmd.exe *)"
+      "Bash(cmd.exe *)",
+      "Bash(git checkout *)"
     ]
   }
 }
