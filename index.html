@@ -5153,7 +5153,7 @@
       state.loggedIn = true;
       state.currentUserId = authSession.userId;
       state.currentEmail = authSession.email || "";
-      state.loginRole = authSession.role || state.loginRole || "student";
+      state.loginRole = authSession.loginRole || authSession.role || state.loginRole || "student";
     }
 
     function clearAuthSession() {
@@ -5684,7 +5684,7 @@
         clearAuthSession();
         throw error;
       }
-      saveAuthSession({ ...authSession, role: actualRole });
+      saveAuthSession({ ...authSession, role: actualRole, loginRole: state.loginRole });
       if (store.authUserId !== user.id || isSeedDemoProfile(store.profile)) resetAccountScopedStore(user.id);
       try {
         await loadRemoteStore();
@@ -5693,7 +5693,7 @@
       }
       state.loading = false;
       state.route = actualRole === "admin"
-        ? (authSession.role === "machine" ? "nfcMachine" : "admin")
+        ? ((authSession.loginRole || state.loginRole) === "machine" ? "nfcMachine" : "admin")
         : "home";
       state.notice = actualRole === "admin" && !state.isAdmin ? "管理员账号已登录，等待授权" : "";
       render();
@@ -5778,8 +5778,9 @@
     ]);
 
     function currentUserRole() {
+      const loginRole = authSession?.loginRole || state.loginRole;
+      if (loginRole === "machine") return "machine";
       const role = authSession?.role || state.loginRole;
-      if (role === "machine") return "machine";
       return role === "admin" ? "admin" : "student";
     }
 
