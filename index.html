@@ -6754,6 +6754,9 @@
       const needsBeforePhoto = loanNeedsBeforePhoto(loan);
       const isAwaitingNfc = loan.status === "等待NFC验证";
       let body;
+      if (!needsBeforePhoto && !isAwaitingNfc) {
+        state.navHistory = ["home"];
+      }
       if (isAwaitingNfc) {
         const expiresIn = loan.verificationCodeExpiresAt
           ? Math.max(0, Math.round((new Date(loan.verificationCodeExpiresAt).getTime() - Date.now()) / 60000))
