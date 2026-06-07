@@ -6323,6 +6323,11 @@
         clearScanTimers();
         state.scanPhase = "idle";
       }
+      if (!state.navHistory) state.navHistory = [];
+      if (state.route && state.route !== to) {
+        state.navHistory.push(state.route);
+        if (state.navHistory.length > 20) state.navHistory.shift();
+      }
       state.previous = state.route;
       state.route = to;
       if (payload.id) state.selectedId = payload.id;
@@ -6337,7 +6342,17 @@
     }
 
     function back() {
-      route(state.previous || "home");
+      if (!state.navHistory) state.navHistory = [];
+      while (state.navHistory.length > 0) {
+        const prev = state.navHistory.pop();
+        if (prev && prev !== state.route) {
+          state.route = prev;
+          render();
+          if (state.loggedIn && shouldRefreshOnRoute(prev)) refreshRemoteStore();
+          return;
+        }
+      }
+      route("home");
     }
 
     function statusClass(status) {
