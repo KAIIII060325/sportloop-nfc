@@ -4,7 +4,9 @@
       "Bash(node *)",
       "Bash(copy *)",
       "Bash(cmd.exe *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(dir \"D:\\\\桌面\" /b)",
+      "Read(//d/桌面/**)"
     ]
   }
 }
